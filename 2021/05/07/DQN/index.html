@@ -20,30 +20,44 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="禁鱼之地，塘主勿扰">
-<meta property="og:type" content="website">
-<meta property="og:title" content="特大号鲨鱼的池塘">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="什么是DQN DQN（Deep Q Network）是一种用Q Learing和神经网络结合的一种强化学习的方法，相比于传统的Q Learning运用了神经网络的方法。 神经网络的作用 对比于传统的Q Learning,DQN还额外附加了一个NN（Neural Network），它的通过输入的状态S得到各个不同的动作Actions的Q值（注意：Q值和奖励Reward不同）。 另一个作用，在DQN中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DQN(Deep Q Network)">
+<meta property="og:url" content="http://example.com/2021/05/07/DQN/index.html">
 <meta property="og:site_name" content="特大号鲨鱼的池塘">
-<meta property="og:description" content="禁鱼之地，塘主勿扰">
+<meta property="og:description" content="什么是DQN DQN（Deep Q Network）是一种用Q Learing和神经网络结合的一种强化学习的方法，相比于传统的Q Learning运用了神经网络的方法。 神经网络的作用 对比于传统的Q Learning,DQN还额外附加了一个NN（Neural Network），它的通过输入的状态S得到各个不同的动作Actions的Q值（注意：Q值和奖励Reward不同）。 另一个作用，在DQN中">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/DQN1.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/DQN2.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/q3.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/reinforcement-learning/2-1-1.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/DQN3.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/DQN4.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/reinforcement-learning/4-1-1.jpg">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/DQN5.png">
+<meta property="og:image" content="https://mofanpy.com/static/results/ML-intro/q3.png">
+<meta property="article:published_time" content="2021-05-07T02:44:04.000Z">
+<meta property="article:modified_time" content="2021-05-07T03:35:35.990Z">
 <meta property="article:author" content="特大号的研究僧">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Reinforcement Learning">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mofanpy.com/static/results/ML-intro/DQN1.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/05/07/DQN/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>特大号鲨鱼的池塘</title>
+  <title>DQN(Deep Q Network) | 特大号鲨鱼的池塘</title>
   
 
 
@@ -151,9 +165,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -169,10 +184,9 @@
       <meta itemprop="name" content="特大号鲨鱼的池塘">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/07/DQN/" class="post-title-link" itemprop="url">DQN(Deep Q Network)</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          DQN(Deep Q Network)
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -205,7 +219,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="什么是DQN"><a href="#什么是DQN" class="headerlink" title="什么是DQN"></a>什么是DQN</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN1.png" alt="强化学习和神经网络"></p>
+        <h1 id="什么是DQN"><a href="#什么是DQN" class="headerlink" title="什么是DQN"></a>什么是DQN</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN1.png" alt="强化学习和神经网络"></p>
 <p>DQN（Deep Q Network）是一种用Q Learing和神经网络结合的一种强化学习的方法，相比于传统的Q Learning运用了神经网络的方法。</p>
 <h1 id="神经网络的作用"><a href="#神经网络的作用" class="headerlink" title="神经网络的作用"></a>神经网络的作用</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN2.png" alt="神经网络和Q learning"></p>
 <p>对比于传统的Q Learning,DQN还额外附加了一个NN（Neural Network），它的通过输入的状态S得到各个不同的动作Actions的Q值<strong>（注意：Q值和奖励Reward不同）</strong>。</p>
@@ -225,115 +239,34 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>该文章只是个人简短理解，如果想了解更多和具体代码例子，建议点击下面链接</p>
 <p><a target="_blank" rel="noopener" href="https://mofanpy.com/tutorials/machine-learning/reinforcement-learning/intro-DQN/" title="参考文献">https://mofanpy.com/tutorials/machine-learning/reinforcement-learning/intro-DQN/</a></p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/05/Booklist2021/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="特大号的研究僧">
-      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="特大号鲨鱼的池塘">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/05/Booklist2021/" class="post-title-link" itemprop="url">Booklist2021</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-05-05 17:33:33 / 修改时间：18:55:30" itemprop="dateCreated datePublished" datetime="2021-05-05T17:33:33+08:00">2021-05-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%98%85%E8%AF%BB%E8%80%85/" itemprop="url" rel="index"><span itemprop="name">阅读者</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>下面记录了我2021年的读书清单，读完一本之后才更新，直到2021年结束</strong></p>
-<p><strong>希望我能通过这样的方式促进自己能多读书，读好书，好读书</strong></p>
-<hr>
-<h1 id="《人间失格》-太宰治"><a href="#《人间失格》-太宰治" class="headerlink" title="《人间失格》 太宰治"></a>《人间失格》 太宰治</h1><h2 id="Start-2021-4-12-具体我也不记得了"><a href="#Start-2021-4-12-具体我也不记得了" class="headerlink" title="Start:2021-4-12 (具体我也不记得了)"></a>Start:2021-4-12 (具体我也不记得了)</h2><p><img src="https://ebookg.com/storage/upload/files/000/26/20/71_cover_m.jpg" alt="《人间失格》"></p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>“生而为人，我很抱歉”</strong>—–这个时代年轻人最喜欢调侃的经典丧名言</p>
-<p>这是日本文豪太宰治的名句，也是太宰治的绝笔之作。太宰治——被村上春树誉为国民级作家，《人间失格》解剖了每个人的自我、孤独和迷惘，日本现代文学史的代表作品。主角大庭叶藏作为一个摸不清人类规则的“边缘人”，不断的自我放逐，逐渐“丧失了做人的资格”</p>
-<h2 id="读后感"><a href="#读后感" class="headerlink" title="读后感"></a>读后感</h2><p>我只读完了《人间失格》大庭叶藏的部分，也就是三篇手记，这个小说的主角让我十分的反感，甚至恶心，用通俗的话来说，就是一副好牌，打得稀碎。叶藏从小就在伪装自己的内心，甚至把世界的人类分为两类，并不是男女两类，而是自己和除了自己的人，甚至他并不认为自己是人。他总是在刻意的讨好他人，装疯扮傻有意的迎合他人（包括他的父母）。其中一个片段把这一点体现的淋漓尽致：父亲问家人想要什么礼物，让大家写在清单上，叶藏一直是让父亲帮他带书籍，但是父亲这一次认为他是个小孩应该会喜欢老虎玩偶，这让叶藏感到十分的不安（其实叶藏自己也不知道想要什么，他只会考虑别人喜欢让他要什么），最终叶藏晚上偷偷的把玩偶写在清单上。</p>
-<p>这种在乎他人看法到极致的人，活着很累，人应该大部分为了自己而活，但也应该体会他人的感受，毕竟人是社会群居生物，其中这个比例不同，造成了人的性格不同。</p>
-<p>“生而为人，我很抱歉”，我希望这是一句警言提醒为自己，在我超乎寻常的为他人感受时，适当的放过自己，让自己在那时候变得自私一些。</p>
-<ul>
-<li><strong>“事实上，包括嘲笑我的人在内，人类不是在彼此的不信和猜忌中，照样丝毫没有将耶和华敬怀在心中，若无其事的生存着吗？”</strong></li>
-</ul>
-<h2 id="End：2021-4-20（大概时间）"><a href="#End：2021-4-20（大概时间）" class="headerlink" title="End：2021-4-20（大概时间）"></a>End：2021-4-20（大概时间）</h2><hr>
-<h1 id="《朝闻道》刘慈欣"><a href="#《朝闻道》刘慈欣" class="headerlink" title="《朝闻道》刘慈欣"></a>《朝闻道》刘慈欣</h1><h2 id="Start：2021-4-28"><a href="#Start：2021-4-28" class="headerlink" title="Start：2021-4-28"></a>Start：2021-4-28</h2><p><img src="https://th.bing.com/th/id/Rcf1e372d6475f3d084dcbbe177f1b410?rik=ojK6exG4JcBVLg&riu=http://p7.qhmsg.com/dr/270_500_/t01add8f4dd4338673c.jpg?size=268x357&ehk=eLcMP1KMEerDlLzuj+4J3MQV4hksbhX1FpGliSpncdw=&risl=&pid=ImgRaw" alt="朝闻道"></p>
-<h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>地核中的奇特生物，经过十万年的文明探索，终于突破了宇宙的屏障，却发现身处于另外一个更大的宇宙！天文学家研究出星星的运行规律，却发现星空与人类大佬的运行方式惊人一致！人类科学家即将发现宇宙的终极秘密，却被外星生命告知宇宙的真理吧必须用只自己的生命来交换！</p>
-<p>（如果你是一个在生命道路上为了追求真理坚持不懈，永不放弃的人，但是最终被告知只需要献出你的生命，才能一窥真理的美，你会做什么样的选择）</p>
-<p>大刘的《朝闻道》向我们展示了，那些追求真理的科学家的选择，各个国家元首的选择，以及普通人的反应。</p>
-<h2 id="读后感-1"><a href="#读后感-1" class="headerlink" title="读后感"></a>读后感</h2><p>人的一生的意义是什么，作为一个理工科的研究生，我目前在做的事情，无非是利用科学的方法来解决一个有一个的实际问题，比如说，面对一个NP问题，如何用一种P的方法来得出一个更好的答案。如果有一天，有人问你，我能够为你提供一种完美的方法来解决这个问题，但是代价是和生命同等重要的东西（例如青春，朋友，亲人等等），对于现在的我来说我肯定是拒绝的，因为对于那个完美的解决方案，并不是最吸引我的东西，这也是我认为我不适合沉淀搞科学研究的原因吧！</p>
-<p>假如把这个解决方案换成一个最吸引我的东西，你会去交换吗？我现在还是很难回答这个问题！</p>
-<p>还是谈一谈小说本身吧，里面的主角丁仪是一个基础物理学家，一生的目标都是为了寻找宇宙大统一模型，最终被排险者（外星生命）告知只需要付出生命的代价，就能知道答案，但是这个答案不能告诉其他人。丁仪选择了付出生命而追求真理，像他一样的不只是基础物理学家，还有古生物学家，问了恐龙灭绝的原因，数学家，问了哥德巴赫猜想等，霍金博士问了宇宙的终极目的是什么，外星生命不能回答这个问题，霍金并没有成功的献出生命。我认为大刘的这个设定体现了一丝绝望中的希望，外星生命并不是神的存在，它们也有不知道的东西，和人类一样。</p>
-<ul>
-<li><strong>“对宇宙终极真理的追求是文明的最终目标和归宿”</strong></li>
-<li><strong>“飞蛾扑火，它至少享受了短暂的光明”</strong></li>
-</ul>
-<h2 id="End-2021-5-3"><a href="#End-2021-5-3" class="headerlink" title="End:2021-5-3"></a>End:2021-5-3</h2><hr>
-<h1 id="《一个人就一个人》-刘同"><a href="#《一个人就一个人》-刘同" class="headerlink" title="《一个人就一个人》 刘同"></a>《一个人就一个人》 刘同</h1><h2 id="start-2021-5-4"><a href="#start-2021-5-4" class="headerlink" title="start:2021-5-4"></a>start:2021-5-4</h2><p><img src="https://th.bing.com/th/id/Ra31839618ab8864995408a3213e4d06c?rik=rDlfSDv+j1Jb1g&riu=http://www.chinawriter.com.cn/NMediaFile/2020/0722/MAIN202007220836000270961459340.JPG&ehk=wGeBufEEK5sYUlPQViM295vGdi9LZRiqb3a+yA3B8fM=&risl=&pid=ImgRaw" alt="《一个人就一个人》"></p>
-<h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><p>这是一本刘同的个人自传散文，讲述了一些作者生活中的小故事，个人感觉更像是一本意林短篇小说集；这本书最吸引人的地方是作者的笔法描述很生活随意化，通俗易懂，让人读的很畅快舒适。小说的一个个生活的小故事充满了刘同在平时生活中的一些想法，让人产生强烈的共鸣。</p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/05/Booklist2021/" rel="prev" title="Booklist2021">
+      <i class="fa fa-chevron-left"></i> Booklist2021
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -386,6 +319,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDQN"><span class="nav-number">1.</span> <span class="nav-text">什么是DQN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">神经网络的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%9B%B4%E6%96%B0"><span class="nav-number">3.</span> <span class="nav-text">算法更新</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-learning%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">Q-learning简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DQN%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">DQN算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E6%9B%B4%E6%96%B0"><span class="nav-number">3.3.</span> <span class="nav-text">神经网络参数更新</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DQN%E4%B8%A4%E5%A4%A7%E5%88%A9%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">DQN两大利器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.</span> <span class="nav-text">简单例子描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
