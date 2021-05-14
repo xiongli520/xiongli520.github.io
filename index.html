@@ -127,7 +127,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">3</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">4</span></a>
 
   </li>
   </ul>
@@ -153,6 +153,120 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/14/Q-learning-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/14/Q-learning-1/" class="post-title-link" itemprop="url">Q-learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-05-14 18:13:20 / 修改时间：19:30:57" itemprop="dateCreated datePublished" datetime="2021-05-14T18:13:20+08:00">2021-05-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是强化学习"><a href="#什么是强化学习" class="headerlink" title="什么是强化学习"></a>什么是强化学习</h1><p><img src="https://www.novatec-gmbh.de/wp-content/uploads/1_mPGk9WTNNvp3i4-9JFgD3w.png" alt="强化学习"></p>
+<p>举一个很简单的例子，如果你养了一只宠物—旺财，旺财是一只刚出生的宠物（不一定是狗），啥也不知道，纯洁的像一张白纸。现在你想训练它达到一个目的，例如你想让旺财学猫叫。那么如果旺财“喵”了一声，你就给它最喜欢吃的骨头。如果它“旺”了一声，不仅没有骨头吃，还要严厉的惩罚。久而久之，旺财知道了，喵=骨头，汪=惩罚。</p>
+<p>我们作为主人来模仿环境，例如以命令的形式给我们的旺财一个状态St。我们的旺财是接收状态的对象，随即采取类似喵或者汪的动作。旺财选择任一种动作的过程叫做决策。我们对旺财进行奖励或者惩罚称为赏罚（reward有好有坏），如此循环。</p>
+<h1 id="什么是Q-learning"><a href="#什么是Q-learning" class="headerlink" title="什么是Q-learning"></a>什么是Q-learning</h1><p>Q-learning其实就是把上述那些过程用一个Q表的形式表示出来而已。</p>
+<p>在了解什么是Q表之前，我们先说明一下简称，<strong>S，R，A分别表示当前的状态，奖励，动作；S_，R_，A_分别表示下一状态，奖励，动作</strong>。</p>
+<p>首先对一个Q表进行初始化（这里面的值可以全为0，或者随机）</p>
+<table>
+<thead>
+<tr>
+<th align="center">（空）</th>
+<th align="center">a1</th>
+<th align="center">a2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">s1</td>
+<td align="center">-2</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">s2</td>
+<td align="center">-4</td>
+<td align="center">1</td>
+</tr>
+</tbody></table>
+<h1 id="Q-learning举例分析"><a href="#Q-learning举例分析" class="headerlink" title="Q-learning举例分析"></a>Q-learning举例分析</h1><p>假设我们当前状态S = s1，此时我们需要作出动作A，可以选择的动作有a1和a2，现在我们有一个Q值表（这个只是一个大概的，并不是最终的Q值，我们的目的就是修改这一个Q值表，得到一个准确的数据），如果作出a1动作，我们内心大概估计得到的Q值为-2，如果作出a2动作，会得到Q值为1（这里我们认为Q值越大，代表的结果越好）。</p>
+<p>那么我们果断作出a2的动作（注意，有时候尽管某一个Q值很大，但是有些人会存在逆反心理，就是要选择小的，所以这里存在一定的概念选择a1）。我们假设选择了a2动作，碰巧我们的s1做完a2动作后进入s2的状态，只有我们进入s2状态后才知道到底是奖励还是惩罚，设为R。<br>刚刚这样的一轮操作已经完成了一次强化学习的过程，那么学习体现在哪呢？</p>
+<p>之前我们提到过，我们的目的是对Q值表进行更新，对Q表的更新就是一次学习的过程，我们在s1状态下作出了a1的动作，就能学习到这一次过程的好坏，为了以后我们在所有状态都能作出最好的动作而得到奖励。</p>
+<h1 id="Q-learning-更新"><a href="#Q-learning-更新" class="headerlink" title="Q-learning 更新"></a>Q-learning 更新</h1><p><strong>接下来是真正的重点</strong></p>
+<p><img src="https://static.mofanpy.com/results/ML-intro/q3.png" alt="Q更新"></p>
+<p>前面提到了，我们在s1状态下作出了a1的动作，就能学习到这一次过程的好坏，那么我们就应该更新Q表中（s1，a2）的Q值。设当前表格中的Q（s1，a1）=1表示为Q_eval(我们叫它Q估计，因为这是我们在经过一次学习过程之前的Q值，可能是对的也可能是错的，所以叫它Q估计)，而经过一次学习之后，我们有了这次动作得到的奖励R，以及下一个状态s2，如何利用好这两个条件来估计得到对于（s1，a2）这个动作的Q呢。毋庸置疑R越大，肯定Q越大，所以R肯定独占一项；那S2状态就一点用都没有吗，答案肯定是否认的。我们可以利用Q表中s2的关于所有的动作的值，选择其中最大的那个（也就是表中的（s2，a2）），乘上一个衰减系数gamma（这里我的理解是，虽然Q并不是奖励R，但是在我们心中，认为Q值越大那么和大的奖励值相关性越强，也更能说明我们在s1作出a2动作的好处，加上一个系数更方便我们调节），这也就是我们的第二项。</p>
+<p>我们将上述两项加在一起，称为Q_target(Q目标值)。有了Q_eval和Q_target，将两者做差值，再乘上一个学习率alpha，最后加上原来的Q（也就是Q_eval），就算更新完了一次Q表中的Q（s1，a2）。</p>
+<p>之后的过程就是循环多次学习，更新整个Q值表，使其更加贴切现实环境，能够更快的拿到想要的奖励。</p>
+<h1 id="Q-learning决策"><a href="#Q-learning决策" class="headerlink" title="Q-learning决策"></a>Q-learning决策</h1><p>在Q-learning中我们忽略一个重要的内容，就是决策（如何选择动作a）。</p>
+<p>之前可能提过Q值越大间接表示了可能离奖励越近，但是Q并不等于R。如果我们在s1状态的时候选择大Q值得动作，如果a2真的能将我们更好的得到奖励，那肯定是很好的；但是我们要知道，最开始的时候，我们对于这个环境是一点都不了解的，初始的Q值表是随机生成的（也可能全是0），所以不能完全用最大Q值来决定我们的下一步动作，也需要留一点余地，给出一个小概率，让模型选择一个非常之路，没准非常之路更好更快。</p>
+<p><img src="https://static.mofanpy.com/results/reinforcement-learning/2-1-1.png" alt="Qlearning算法"></p>
+<p>因为在初始阶段, 随机的探索环境, 往往比固定的行为模式要好, 所以这也是累积经验的阶段, 我们希望探索者不会那么贪婪(greedy). 所以 EPSILON 就是用来控制贪婪程度的值. EPSILON 可以随着探索时间不断提升(越来越贪婪)。</p>
+<pre><code>`python编码
+&#39;# 在某个 state 地点, 选择行为
+def choose_action(state, q_table):`
+    state_actions = q_table.iloc[state, :]  # 选出这个 state 的所有 action 值
+    if (np.random.uniform() &gt; EPSILON) or (state_actions.all() == 0):  # 非贪婪 or 或者这个 state 还没有探索过
+        action_name = np.random.choice(ACTIONS)
+    else:
+        action_name = state_actions.argmax()    # 贪婪模式
+    return action_name`
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -508,7 +622,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
