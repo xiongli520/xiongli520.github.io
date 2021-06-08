@@ -117,7 +117,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">5</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -127,7 +127,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">6</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
 
   </li>
   </ul>
@@ -153,6 +153,198 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/08/python-format%E7%94%A8%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/08/python-format%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">python_format用法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-08 15:42:49 / 修改时间：15:45:01" itemprop="dateCreated datePublished" datetime="2021-06-08T15:42:49+08:00">2021-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Python笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="format语法格式"><a href="#format语法格式" class="headerlink" title="format语法格式"></a>format语法格式</h1><p>str.format()<br>str是指字符串实例对象，常用格式为‘ ’.format()</p>
+<h2 id="format参数格式"><a href="#format参数格式" class="headerlink" title="format参数格式"></a>format参数格式</h2><p>‘{[index][ : [fill] align][sign][#][width][.precision][type]}  {……}{……} ‘.format()<br>以上参数的意义是：<br>注意，格式中的[  ]内的参数都是可选参数，可以使用也可以不使用</p>
+<ul>
+<li>index：指定冒号<strong>：</strong>后面出现的参数在‘format()’中的索引值，如果没有，则以format（）中的默认顺序自动分配</li>
+<li>fill：指定空白处的填充符。</li>
+<li>align:指定数字的对齐方式：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">align</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&lt;</td>
+<td align="center">right-aligned 左对齐（对于大部分对象时为默认）</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td align="center">right-aligned 右对齐 （对于数字时为默认）</td>
+</tr>
+<tr>
+<td align="center">=</td>
+<td align="center">数据右对齐，同时将符号放置在填充内容的最左侧，该选项只对数字类型有效</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td align="center">数据居中，此选项需和 width 参数一起使用</td>
+</tr>
+</tbody></table>
+<ul>
+<li>sign：指定有无符号数，此参数的值以及对应的含义如表所示</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">sign 参数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">+</td>
+<td align="center">正数前面添加 ‘ + ’ ，负数前面加 ‘ - ’</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">正数前面不添加 ‘ + ’ ，负数前面加 ‘ - ’</td>
+</tr>
+<tr>
+<td align="center">space</td>
+<td align="center">正数前面添加 ‘ 空格 ’ ，负数前面加 ‘ - ’</td>
+</tr>
+<tr>
+<td align="center">#</td>
+<td align="center">对于二进制数、八进制数和十六进制数，使用此参数，各进制数前会分别显示 0b、0o、0x前缀；反之则不显示前缀</td>
+</tr>
+</tbody></table>
+<ul>
+<li>width：指定输出数据时所占的宽度</li>
+<li>. precision：如果后面存在type参数，则指的是保留小数的位数，如果type参数不存在，则是指有效数字的位数</li>
+<li>type：指定输出数据的具体类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">type类型值</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">s</td>
+<td align="center">对字符串类型格式化</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">十进制整数</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">将十进制整数自动转换成对应的 Unicode 字符</td>
+</tr>
+<tr>
+<td align="center">e or E</td>
+<td align="center">转换成科学计数法后，再格式化输出</td>
+</tr>
+<tr>
+<td align="center">g or G</td>
+<td align="center">自动在 e 和 f（或 E 和 F）中切换</td>
+</tr>
+<tr>
+<td align="center">b</td>
+<td align="center">将十进制数自动转换成二进制表示，再格式化输出</td>
+</tr>
+<tr>
+<td align="center">o</td>
+<td align="center">将十进制数自动转换成八进制表示，再格式化输出</td>
+</tr>
+<tr>
+<td align="center">x or X</td>
+<td align="center">将十进制数自动转换成十六进制表示，再格式化输出</td>
+</tr>
+<tr>
+<td align="center">f or F</td>
+<td align="center">转换为浮点数（默认小数点后保留 6 位），再格式化输出</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td align="center">显示百分比（默认显示小数点后 6 位)</td>
+</tr>
+</tbody></table>
+<h2 id="format实例"><a href="#format实例" class="headerlink" title="format实例"></a>format实例</h2><p>下面举一些实例来说明format各个参数的用法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// python ：^：代表居中显示数字567，位数width=10，fill=*（填充符为*）</span></span><br><span class="line"><span class="string">&#x27;&#123;:*^10&#125;&#x27;</span>.format(<span class="number">567</span>)</span><br><span class="line">结果：</span><br><span class="line"><span class="string">&#x27;***567****&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//python :0是填充符，2是width，表示位数为2</span></span><br><span class="line"><span class="string">&#x27;&#123;:02&#125;:&#123;:02&#125;:&#123;:02&#125;&#x27;</span>.format(<span class="number">13</span>,<span class="number">4</span>,<span class="number">57</span>)</span><br><span class="line">结果：</span><br><span class="line"><span class="string">&#x27;13:04:57&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="通过位置来填充字符串"><a href="#通过位置来填充字符串" class="headerlink" title="通过位置来填充字符串"></a>通过位置来填充字符串</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;hello &#123;0&#125; i am &#123;1&#125;&#x27;.format(&#x27;world&#x27;,&#x27;python&#x27;))    # 输入结果：hello world i am python</span><br><span class="line">print(&#x27;hello &#123;&#125; i am &#123;&#125;&#x27;.format(&#x27;world&#x27;,&#x27;python&#x27;) ) #输入结果：hello world i am python</span><br><span class="line">print(<span class="string">&#x27;hello &#123;0&#125; i am &#123;1&#125; . a now language-- &#123;1&#125;&#x27;</span>.format(<span class="string">&#x27;world&#x27;</span>,<span class="string">&#x27;python&#x27;</span>)</span><br><span class="line"># 输出结果：hello world i am python . a now language-- python</span><br></pre></td></tr></table></figure>
+<p>foramt会把参数按位置顺序来填充到字符串中，第一个参数是0，然后1 ……<br>也可以不输入数字，则会按照顺序自动分配，而且一个参数可以多次插入</p>
+<h2 id="通过key来填充"><a href="#通过key来填充" class="headerlink" title="通过key来填充"></a>通过key来填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj = <span class="string">&#x27;world&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello, &#123;obj&#125; ,i am &#123;name&#125;&#x27;</span>.format(obj = obj,name = name))</span><br><span class="line"># 输入结果：hello, world ,i am python</span><br></pre></td></tr></table></figure>
+<h2 id="通过列表填充"><a href="#通过列表填充" class="headerlink" title="通过列表填充"></a>通过列表填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj = <span class="string">&#x27;world&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello, &#123;obj&#125; ,i am &#123;name&#125;&#x27;</span>.format(obj = obj,name = name))</span><br><span class="line"># 输入结果：hello, world ,i am python</span><br></pre></td></tr></table></figure>
+<h2 id="通过列表填充-1"><a href="#通过列表填充-1" class="headerlink" title="通过列表填充"></a>通过列表填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list=[<span class="string">&#x27;world&#x27;</span>,<span class="string">&#x27;python&#x27;</span>]</span><br><span class="line">print(&#x27;hello &#123;names[0]&#125;  i am &#123;names[1]&#125;&#x27;.format(names=list))# 输出结果：hello world  i am python</span><br><span class="line">print(&#x27;hello &#123;0[0]&#125;  i am &#123;0[1]&#125;&#x27;.format(list)) #输出结果：hello world  i am python</span><br></pre></td></tr></table></figure>
+<h2 id="通过字典填充"><a href="#通过字典填充" class="headerlink" title="通过字典填充"></a>通过字典填充</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dict=&#123;‘obj’:’world’,’name’:’python’&#125; </span><br><span class="line">print(‘hello &#123;names[obj]&#125; i am &#123;names[name]&#125;’.format(names=dict)) </span><br><span class="line">结果hello world i am python </span><br></pre></td></tr></table></figure>
+<h2 id="通过类的属性填充"><a href="#通过类的属性填充" class="headerlink" title="通过类的属性填充"></a>通过类的属性填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Names():</span><br><span class="line">    obj=<span class="string">&#x27;world&#x27;</span></span><br><span class="line">    name=<span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello &#123;names.obj&#125; i am &#123;names.name&#125;&#x27;</span>.format(names=Names))</span><br><span class="line">#输入结果hello world i am python</span><br></pre></td></tr></table></figure>
+<h2 id="使用魔法参数"><a href="#使用魔法参数" class="headerlink" title="使用魔法参数"></a>使用魔法参数</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">args = [‘,’,’inx’] </span><br><span class="line">kwargs = &#123;‘obj’: ‘world’, ‘name’: ‘python’&#125; </span><br><span class="line">print(‘hello &#123;obj&#125; &#123;&#125; i am &#123;name&#125;’.format(*args, **kwargs))#输入结果：hello world , i am python</span><br></pre></td></tr></table></figure>
+<p>注意：魔法参数跟你函数中使用的性质是一样的：这里format(*args, **kwargs)) 等价于：format(‘,’,’inx’,obj = ‘world’,name = ‘python’)</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p>参考一下连接blog和官方文档整理，以便自己以后查询<br> [1]: <a target="_blank" rel="noopener" href="https://blog.csdn.net/it_python/article/details/81037078">https://blog.csdn.net/it_python/article/details/81037078</a><br> [2]: <a target="_blank" rel="noopener" href="http://c.biancheng.net/view/4301.html">http://c.biancheng.net/view/4301.html</a><br> [3]: <a target="_blank" rel="noopener" href="https://docs.python.org/3.4/library/string.html#formatspec">https://docs.python.org/3.4/library/string.html#formatspec</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -783,7 +975,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -796,7 +988,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
