@@ -20,19 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="禁鱼之地，塘主勿扰">
+  <meta name="description" content="1、tf.random.truncated_normal与tf.random.normal区别在tf.random.truncated_normal中如果x的取值在区间（μ-2σ，μ+2σ）之外则重新进行选择，这样保证了生成的值都在均值附近。而tf.random.normal则是正常的在正态分布中采样。 2、tf.pad(x,paddings)填充函数x:需要填充的对象paddings是一个包含了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TTE_RL_schedule">
-<meta property="og:url" content="http://example.com/2021/05/21/TTE-RL-schedule/index.html">
+<meta property="og:title" content="tensorflow2+_01">
+<meta property="og:url" content="http://example.com/2021/06/25/tensorflow2-01/index.html">
 <meta property="og:site_name" content="特大号鲨鱼的池塘">
-<meta property="og:description" content="禁鱼之地，塘主勿扰">
+<meta property="og:description" content="1、tf.random.truncated_normal与tf.random.normal区别在tf.random.truncated_normal中如果x的取值在区间（μ-2σ，μ+2σ）之外则重新进行选择，这样保证了生成的值都在均值附近。而tf.random.normal则是正常的在正态分布中采样。 2、tf.pad(x,paddings)填充函数x:需要填充的对象paddings是一个包含了">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-05-21T11:56:58.000Z">
-<meta property="article:modified_time" content="2021-05-21T11:56:58.936Z">
+<meta property="article:published_time" content="2021-06-25T10:32:29.000Z">
+<meta property="article:modified_time" content="2021-06-25T10:51:14.431Z">
 <meta property="article:author" content="特大号的研究僧">
+<meta property="article:tag" content="tensorflow2+">
+<meta property="article:tag" content="张量介绍">
+<meta property="article:tag" content="tf方法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2021/05/21/TTE-RL-schedule/">
+<link rel="canonical" href="http://example.com/2021/06/25/tensorflow2-01/">
 
 
 <script id="page-configurations">
@@ -45,7 +48,7 @@
   };
 </script>
 
-  <title>TTE_RL_schedule | 特大号鲨鱼的池塘</title>
+  <title>tensorflow2+_01 | 特大号鲨鱼的池塘</title>
   
 
 
@@ -160,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/21/TTE-RL-schedule/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/25/tensorflow2-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/header.png">
@@ -173,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          TTE_RL_schedule
+          tensorflow2+_01
         </h1>
 
         <div class="post-meta">
@@ -182,8 +185,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-05-21 19:56:58" itemprop="dateCreated datePublished" datetime="2021-05-21T19:56:58+08:00">2021-05-21</time>
+              <time title="创建时间：2021-06-25 18:32:29 / 修改时间：18:51:14" itemprop="dateCreated datePublished" datetime="2021-06-25T18:32:29+08:00">2021-06-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow2/" itemprop="url" rel="index"><span itemprop="name">TensorFlow2+</span></a>
+                </span>
             </span>
 
           
@@ -197,7 +210,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="1、tf-random-truncated-normal与tf-random-normal区别"><a href="#1、tf-random-truncated-normal与tf-random-normal区别" class="headerlink" title="1、tf.random.truncated_normal与tf.random.normal区别"></a>1、tf.random.truncated_normal与tf.random.normal区别</h1><p>在tf.random.truncated_normal中如果x的取值在区间（μ-2σ，μ+2σ）之外则重新进行选择，这样保证了生成的值都在均值附近。<br>而tf.random.normal则是正常的在正态分布中采样。</p>
+<h1 id="2、tf-pad-x-paddings-填充函数"><a href="#2、tf-pad-x-paddings-填充函数" class="headerlink" title="2、tf.pad(x,paddings)填充函数"></a>2、tf.pad(x,paddings)填充函数</h1><p>x:需要填充的对象<br>paddings是一个包含了多个[leftpaddings, rightpaddings]的列表<br>如：paddings=[[0,0],[2,1],[1,2]],则表示，x的第一个维度左边填充0个单元，右边填充0个单元<br>第二个维度左边填充2个单元，右边填充1个单元；第三个维度左边填充1个单元，右边填充2个单元。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; tf.constant([1,2,3])</span><br><span class="line">a &#x3D; tf.pad(a,paddings&#x3D;[[1,2]]</span><br><span class="line"># a.numpy &#x3D; [0,1,2,3,0,0]</span><br></pre></td></tr></table></figure>
+
+<h1 id="3、tf-clip-by-value-x-min-max"><a href="#3、tf-clip-by-value-x-min-max" class="headerlink" title="3、tf.clip_by_value(x,min,max)"></a>3、tf.clip_by_value(x,min,max)</h1><p>x:处理的张量对象<br>将x的值限制在min~max之间，如果小于min，则将其赋值为min；如果大于max，则赋值为max，其他不变<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.range(9)</span><br><span class="line">tf.clip_by_value(x,2,7)</span><br><span class="line"># x.numpy &#x3D; [2,2,2,3,4,5,6,7,7]</span><br></pre></td></tr></table></figure>
+
+<h1 id="4、tf-linspace、tf-range和np-linspace"><a href="#4、tf-linspace、tf-range和np-linspace" class="headerlink" title="4、tf.linspace、tf.range和np.linspace#"></a>4、tf.linspace、tf.range和np.linspace#</h1><p>三种形式：</p>
+<p>tf.linspace(start,end,num)</p>
+<p>tf.range(start=0,end,delta=1)</p>
+<p>np.linspace(start,end,num)</p>
+<p>tf.linspace和np.linspace几乎相同没有区别。最大的区别就是tf生成的是一个张量tensor，而np生成的是一个array。</p>
+<p><strong>tf.linspace &amp; tf.range区别</strong></p>
+<p>tf.linspace(start,end,num):[start,end]<strong>闭区间</strong>，最后是包括end，且生成的数目=num，默认类型是float64</p>
+<p>tf.range(start=0,end,delta=1)：[start,end)<strong>左闭右开</strong>，最后不包括end，且delta是指步长间隔，默认类型为int32</p>
+<p>实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; tf.linspace(1,10,10)</span><br><span class="line">b &#x3D; tf.range(1,10,delta&#x3D;1)</span><br><span class="line"></span><br><span class="line">#a:  tf.Tensor([ 1.  2.  3.  4.  5.  6.  7.  8.  9. 10.], shape&#x3D;(10,), dtype&#x3D;float64)</span><br><span class="line">#b:  tf.Tensor([1 2 3 4 5 6 7 8 9], shape&#x3D;(9,), dtype&#x3D;int32)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="5、tf-where-cond-a-b"><a href="#5、tf-where-cond-a-b" class="headerlink" title="5、tf.where(cond,a,b)"></a>5、tf.where(cond,a,b)</h1><p>根据cond条件的真假从参数A或B中读取数据，如果cond为True则读取a，False读取b<br>a,b分别是A和B中的元素。<br>如果a=b=None，则返回的是cond中所有True的索引的张量</p>
+
     </div>
 
     
@@ -205,6 +238,11 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tensorflow2/" rel="tag"># tensorflow2+</a>
+              <a href="/tags/%E5%BC%A0%E9%87%8F%E4%BB%8B%E7%BB%8D/" rel="tag"># 张量介绍</a>
+              <a href="/tags/tf%E6%96%B9%E6%B3%95/" rel="tag"># tf方法</a>
+          </div>
 
         
 
@@ -212,13 +250,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/05/14/Q-learning-1/" rel="prev" title="Q-learning">
-      <i class="fa fa-chevron-left"></i> Q-learning
+    <a href="/2021/06/23/matplotlib-plt/" rel="prev" title="matplotlib-plt">
+      <i class="fa fa-chevron-left"></i> matplotlib-plt
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/06/05/itertools/" rel="next" title="itertools">
-      itertools <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -277,6 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81tf-random-truncated-normal%E4%B8%8Etf-random-normal%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">1、tf.random.truncated_normal与tf.random.normal区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E3%80%81tf-pad-x-paddings-%E5%A1%AB%E5%85%85%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">2、tf.pad(x,paddings)填充函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%E3%80%81tf-clip-by-value-x-min-max"><span class="nav-number">3.</span> <span class="nav-text">3、tf.clip_by_value(x,min,max)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4%E3%80%81tf-linspace%E3%80%81tf-range%E5%92%8Cnp-linspace"><span class="nav-number">4.</span> <span class="nav-text">4、tf.linspace、tf.range和np.linspace#</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5%E3%80%81tf-where-cond-a-b"><span class="nav-number">5.</span> <span class="nav-text">5、tf.where(cond,a,b)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
