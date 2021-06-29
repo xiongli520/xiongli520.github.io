@@ -127,7 +127,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
   </ul>
@@ -182,7 +182,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-29 22:41:12 / 修改时间：23:01:13" itemprop="dateCreated datePublished" datetime="2021-06-29T22:41:12+08:00">2021-06-29</time>
+              <time title="创建时间：2021-06-29 22:41:12 / 修改时间：23:08:45" itemprop="dateCreated datePublished" datetime="2021-06-29T22:41:12+08:00">2021-06-29</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -206,69 +206,14 @@
 
       
           <h1 id="tensorflow自动求导—tf-GradientTape"><a href="#tensorflow自动求导—tf-GradientTape" class="headerlink" title="tensorflow自动求导—tf.GradientTape"></a>tensorflow自动求导—tf.GradientTape</h1><h2 id="一阶导数"><a href="#一阶导数" class="headerlink" title="一阶导数"></a>一阶导数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.constant(3.0)</span><br><span class="line">with tf.GradientTape() as g:  # （1）创建一个GradientTape对象</span><br><span class="line">    g.watch(x)  # （2）监视watch要求导的变量</span><br><span class="line">    y &#x3D; x * x</span><br><span class="line">dy_dx &#x3D; g.gradient(y, x) # （3）对函数进行求导</span><br></pre></td></tr></table></figure>
-
-<h2 id="对同一计算图多次求导"><a href="#对同一计算图多次求导" class="headerlink" title="对同一计算图多次求导"></a>对同一计算图多次求导</h2><p>GradientTape 默认（persistent = False）在进行一次求导后就销毁计算图，从而节约内存。如果要在同一个计算图下进行多次求导，就要设定 persistent = True 。但是注意要手动释放资源del tape。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.constant(3.0)</span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">  g.watch(x)</span><br><span class="line">  y &#x3D; x * x</span><br><span class="line">  z &#x3D; y * y</span><br><span class="line">dz_dx &#x3D; g.gradient(z, x)  # 108.0 (4*x^3 at x &#x3D; 3)</span><br><span class="line">dy_dx &#x3D; g.gradient(y, x)  # 6.0</span><br><span class="line">del g  # Drop the reference to the tape</span><br></pre></td></tr></table></figure>
-
-<h1 id="GradientTape关键方法"><a href="#GradientTape关键方法" class="headerlink" title="GradientTape关键方法"></a>GradientTape关键方法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class GradientTape(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, persistent&#x3D;False, watch_accessed_variables&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;构建函数&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __enter__(self):</span><br><span class="line">        &quot;&quot;&quot;用于支持with上下文管理器，进入记录的计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __exit__(self, typ, value, traceback):</span><br><span class="line">        &quot;&quot;&quot;用于支持with上下文管理器，离开计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def watch(self, tensor):</span><br><span class="line">        &quot;&quot;&quot;设定需要“监控”的变量&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def stop_recording(self):</span><br><span class="line">        &quot;&quot;&quot;一个类似with的上下文管理器，tape将不会记录其中的运算操作&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def reset(self):</span><br><span class="line">        &quot;&quot;&quot;清除已有的计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def watched_variables(self):</span><br><span class="line">        &quot;&quot;&quot;返回被“监控”的变量&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def gradient(self, target, sources, output_gradients&#x3D;None,</span><br><span class="line">               unconnected_gradients&#x3D;UnconnectedGradients.NONE):</span><br><span class="line">        &quot;&quot;&quot;计算梯度，返回的梯度与 sources 同结构&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def jacobian(self, target, sources, unconnected_gradients&#x3D;UnconnectedGradients.NONE,</span><br><span class="line">               parallel_iterations&#x3D;None, experimental_use_pfor&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;计算jacobian矩阵&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def batch_jacobian(target, source, unconnected_gradients&#x3D;tf.UnconnectedGradients.NONE,                          parallel_iterations&#x3D;None, experimental_use_pfor&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;批量计算jacobian&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="init-persistent-False-watch-accessed-variables-True"><a href="#init-persistent-False-watch-accessed-variables-True" class="headerlink" title="init( persistent=False, watch_accessed_variables=True)"></a><strong>init</strong>( persistent=False, watch_accessed_variables=True)</h2><ul>
-<li>persistent: <ul>
-<li>False（默认） : 求导一次后就会 自动 销毁计算图，不能再求导第二次，这主要是出于节省内存的考虑。</li>
-<li>True : 计算图将不会被 自动 销毁，可以进行多次求导</li>
-</ul>
-</li>
-<li>watch_accessed_variables:<ul>
-<li>True（默认） : 自动“监控”计算过程中出现的所有可训练变量</li>
-<li>False : 需要使用tape.watch()来人为指定需要“监控”的变量</li>
-</ul>
-</li>
-</ul>
-<h2 id="gradient-target-sources-output-gradients-None-unconnected-gradients-tf-UnconnectedGradients-NONE"><a href="#gradient-target-sources-output-gradients-None-unconnected-gradients-tf-UnconnectedGradients-NONE" class="headerlink" title="gradient( target, sources, output_gradients=None, unconnected_gradients=tf.UnconnectedGradients.NONE)"></a>gradient( target, sources, output_gradients=None, unconnected_gradients=tf.UnconnectedGradients.NONE)</h2><ul>
-<li>target:<ul>
-<li>Tensor (or list of tensors) 求导的因变量 target node 。</li>
-</ul>
-</li>
-<li>sources:<ul>
-<li>Tensor (or list of tensors) 求导的自变量 sources node 。</li>
-</ul>
-</li>
-<li>unconnected_gradients:<ul>
-<li>无法求导时，返回的值，有两个可选值[“none”, “zero”]，默认”none”。例如，当 target node 与 sources node 之间在计算图上没有办法联通时，将会返回None。<strong>个人认为，设置为”zero”更合适。</strong></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x&#x3D;tf.Variable(initial_value&#x3D;[1.0,2.0,3.0])</span><br><span class="line"></span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">    g.watch(x)</span><br><span class="line">    z&#x3D;tf.pow(y,2)  # z与x根本就没有关系，即在graph上面没有连接</span><br><span class="line"></span><br><span class="line">dz_dx &#x3D; g.gradient(z, [x,y],unconnected_gradients&#x3D;&quot;none&quot;)  # 默认就是none</span><br><span class="line">print(dz_dx)</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">返回值为：None</span><br><span class="line"></span><br><span class="line">由上面可以看出，由于z与x之间并没有连通，所以返回的是None</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>output_gradients: <ul>
-<li>对求得的梯度乘以一系列权重，默认为None，不进行操作。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">x&#x3D;tf.Variable(initial_value&#x3D;[1.0,2.0,3.0])</span><br><span class="line"></span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">    g.watch(x)</span><br><span class="line">    z&#x3D;tf.pow(x,2)</span><br><span class="line"></span><br><span class="line">output_gradients&#x3D;tf.Variable([-0.2,0.6,0.2])</span><br><span class="line">dz_dx &#x3D; g.gradient(z, x,output_gradients&#x3D;output_gradients)   #给每一个元素施加不同的权重</span><br><span class="line">print(dz_dx)</span><br><span class="line">&#39;&#39;&#39;运行结果为：</span><br><span class="line">&lt;tf.Tensor: id&#x3D;64, shape&#x3D;(3,), dtype&#x3D;float32, numpy&#x3D;array([-0.4, 2.4, 1.2], </span><br><span class="line">  dtype&#x3D;float32)&gt;</span><br><span class="line"></span><br><span class="line">本来的结果是dz_dx&#x3D;[2,4,6], 分别乘以权重[0.2,0.6,0.2]之后，得到[-0.4,2.4,1.2]</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
-<h2 id="jacobian-target-sources-unconnected-gradients-tf-UnconnectedGradients-NONE-parallel-iterations-None-experimental-use-pfor-True"><a href="#jacobian-target-sources-unconnected-gradients-tf-UnconnectedGradients-NONE-parallel-iterations-None-experimental-use-pfor-True" class="headerlink" title="jacobian(target, sources, unconnected_gradients=tf.UnconnectedGradients.NONE, parallel_iterations=None, experimental_use_pfor=True)"></a>jacobian(target, sources, unconnected_gradients=tf.UnconnectedGradients.NONE, parallel_iterations=None, experimental_use_pfor=True)</h2><p><strong>计算jacobian矩阵</strong></p>
-<ul>
-<li>target：A tensor (or list of tensor) with shape [y1,…yn] .</li>
-<li>sources: A tensor (or list of tensor) with shape [x1,…xm] .</li>
-<li>unconnected_gradients: 类似tape.gradient()中的介绍。</li>
-<li>parallel_iterations: jacobian的求解中，实际上是含有 while_loop 循环的，而该参数则是允许并行执行的循环个数。该参数将影响内存占用。</li>
-<li>experimental_use_pfor:<ul>
-<li>True（默认） : 使用向量化的方法（pfor）计算 jacobian（vectorizes the jacobian computation）</li>
-<li>False : 使用 while_loop 方法计算。一般来说，向量化能加速计算，但向量化占用的内存远高于 while_loop 。</li>
-</ul>
-</li>
-<li>Returns: A tensor (or list of tensor) with shape [y1,…yn,x1…xm] 。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">with tf.GradientTape() as g:</span><br><span class="line">    x &#x3D; tf.constant(np.random.rand(100, 10, 3))</span><br><span class="line">    W &#x3D; tf.constant(np.random.rand(100, 3, 5))</span><br><span class="line">    g.watch(x)</span><br><span class="line">    y &#x3D; x @ W</span><br><span class="line">jacobian &#x3D; g.jacobian(y, x)</span><br><span class="line"></span><br><span class="line">print(jacobian.shape)  # (100, 10, 5, 100, 10, 3)</span><br></pre></td></tr></table></figure>
-<h2 id="reset"><a href="#reset" class="headerlink" title="reset()"></a>reset()</h2><p><strong>清除已有的计算图</strong></p>
-<p>下面两个代码块是等价的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with tf.GradientTape() as t:  </span><br><span class="line">    loss &#x3D; loss_fn()</span><br><span class="line">with tf.GradientTape() as t: </span><br><span class="line">    loss +&#x3D; other_loss_fn()</span><br><span class="line">t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn</span><br><span class="line"></span><br><span class="line"># The following is equivalent to the above</span><br><span class="line"></span><br><span class="line">with tf.GradientTape() as t:  </span><br><span class="line">    loss &#x3D; loss_fn() </span><br><span class="line">    t.reset()  </span><br><span class="line">    loss +&#x3D; other_loss_fn()t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn</span><br></pre></td></tr></table></figure>
-<p>问题：既然有上面的等价形式，那么tape.reset()是不是就是多余的呢？</p>
-<p>当然不是啦，利用reset可以在同一个tape里面进行不同计算图的切换:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loss &#x3D; 0.0</span><br><span class="line">with tf.GradientTape() as t: </span><br><span class="line">    loss +&#x3D; encoder_loss_fn()  </span><br><span class="line">    if use_decoder &#x3D;&#x3D; True:    </span><br><span class="line">        t.reset()</span><br><span class="line">        loss +&#x3D; decoder_loss_fn()</span><br></pre></td></tr></table></figure>
-<p>虽然用等价形式也可以做到，但是用reset显然更漂亮，漂亮就是最大的用处。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/29/tensorflow2-02/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -318,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-26 16:10:58" itemprop="dateModified" datetime="2021-06-26T16:10:58+08:00">2021-06-26</time>
+                <time title="修改时间：2021-06-29 23:10:15" itemprop="dateModified" datetime="2021-06-29T23:10:15+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -343,25 +288,14 @@
       
           <h1 id="tf-random-truncated-normal与tf-random-normal区别"><a href="#tf-random-truncated-normal与tf-random-normal区别" class="headerlink" title="tf.random.truncated_normal与tf.random.normal区别"></a>tf.random.truncated_normal与tf.random.normal区别</h1><p>在tf.random.truncated_normal中如果x的取值在区间（μ-2σ，μ+2σ）之外则重新进行选择，这样保证了生成的值都在均值附近。<br>而tf.random.normal则是正常的在正态分布中采样。</p>
 <h1 id="tf-pad-x-paddings-填充函数"><a href="#tf-pad-x-paddings-填充函数" class="headerlink" title="tf.pad(x,paddings)填充函数"></a>tf.pad(x,paddings)填充函数</h1><p>x:需要填充的对象<br>paddings是一个包含了多个[leftpaddings, rightpaddings]的列表<br>如：paddings=[[0,0],[2,1],[1,2]],则表示，x的第一个维度左边填充0个单元，右边填充0个单元<br>第二个维度左边填充2个单元，右边填充1个单元；第三个维度左边填充1个单元，右边填充2个单元。</p>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; tf.constant([1,2,3])</span><br><span class="line">a &#x3D; tf.pad(a,paddings&#x3D;[[1,2]]</span><br><span class="line"># a.numpy &#x3D; [0,1,2,3,0,0]</span><br></pre></td></tr></table></figure>
-
-<h1 id="tf-clip-by-value-x-min-max"><a href="#tf-clip-by-value-x-min-max" class="headerlink" title="tf.clip_by_value(x,min,max)"></a>tf.clip_by_value(x,min,max)</h1><p>x:处理的张量对象<br>将x的值限制在min~max之间，如果小于min，则将其赋值为min；如果大于max，则赋值为max，其他不变<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.range(9)</span><br><span class="line">tf.clip_by_value(x,2,7)</span><br><span class="line"># x.numpy &#x3D; [2,2,2,3,4,5,6,7,7]</span><br></pre></td></tr></table></figure>
-
-<h1 id="tf-linspace、tf-range和np-linspace"><a href="#tf-linspace、tf-range和np-linspace" class="headerlink" title="tf.linspace、tf.range和np.linspace#"></a>tf.linspace、tf.range和np.linspace#</h1><p>三种形式：</p>
-<p>tf.linspace(start,end,num)</p>
-<p>tf.range(start=0,end,delta=1)</p>
-<p>np.linspace(start,end,num)</p>
-<p>tf.linspace和np.linspace几乎相同没有区别。最大的区别就是tf生成的是一个张量tensor，而np生成的是一个array。</p>
-<p><strong>tf.linspace &amp; tf.range区别</strong></p>
-<p>tf.linspace(start,end,num):[start,end]<strong>闭区间</strong>，最后是包括end，且生成的数目=num，默认类型是float64</p>
-<p>tf.range(start=0,end,delta=1)：[start,end)<strong>左闭右开</strong>，最后不包括end，且delta是指步长间隔，默认类型为int32</p>
-<p>实例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; tf.linspace(1,10,10)</span><br><span class="line">b &#x3D; tf.range(1,10,delta&#x3D;1)</span><br><span class="line"></span><br><span class="line">#a:  tf.Tensor([ 1.  2.  3.  4.  5.  6.  7.  8.  9. 10.], shape&#x3D;(10,), dtype&#x3D;float64)</span><br><span class="line">#b:  tf.Tensor([1 2 3 4 5 6 7 8 9], shape&#x3D;(9,), dtype&#x3D;int32)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="tf-where-cond-a-b"><a href="#tf-where-cond-a-b" class="headerlink" title="tf.where(cond,a,b)"></a>tf.where(cond,a,b)</h1><p>根据cond条件的真假从参数A或B中读取数据，如果cond为True则读取a，False读取b<br>a,b分别是A和B中的元素。<br>如果a=b=None，则返回的是cond中所有True的索引的张量</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/25/tensorflow2-01/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -403,10 +337,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-23 18:09:59 / 修改时间：18:32:28" itemprop="dateCreated datePublished" datetime="2021-06-23T18:09:59+08:00">2021-06-23</time>
+              <time title="创建时间：2021-06-23 18:09:59" itemprop="dateCreated datePublished" datetime="2021-06-23T18:09:59+08:00">2021-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:16" itemprop="dateModified" datetime="2021-06-29T23:10:16+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -430,25 +370,14 @@
       
           <h1 id="Matplotlib画图中fig-ax区别和联系"><a href="#Matplotlib画图中fig-ax区别和联系" class="headerlink" title="Matplotlib画图中fig,ax区别和联系"></a>Matplotlib画图中fig,ax区别和联系</h1><p><strong>先观察以下代码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#figure是matplotlib中最基础的一个对象，是一个总的画布</span><br><span class="line">fig = plt.figure()	</span><br><span class="line"></span><br><span class="line">#add_subplot在画布中添加一个axes(可以理解为子区域)，并返回这个子区域</span><br><span class="line">#参数的前两个表示子区域的行列数，最后一个表示子区域的顺序</span><br><span class="line">#在这个子区域中画图</span><br><span class="line">ax = fig.add_subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>)	</span><br><span class="line">	</span><br><span class="line">ax.plot([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fig &#x3D; plt.figure()</span><br><span class="line"># 和fig.add_subplot作用相同，只是直接调用plt.subplot，</span><br><span class="line"># 会获取当前活跃的figure对象，然后添加子区域</span><br><span class="line">ax &#x3D; plt.subplot(2,2,1)</span><br><span class="line">ax.plot([1,2,3])</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fig, ax &#x3D; plt.subplots(2,2)</span><br><span class="line"># 调用subplots会直接添加多个子区域，返回的ax是一个包含所有子区域的矩阵</span><br><span class="line"># 通过下标获取需要的子区域</span><br><span class="line">ax1 &#x3D; ax[0,0]</span><br><span class="line">ax1.plot([1,2,3])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>结果如下图</strong></p>
-<p><img src="https://pic2.zhimg.com/80/v2-13c61dc183e03ec83fafbddc5248d0d1_720w.jpg" alt="结果图"></p>
-<p><img src="https://pic2.zhimg.com/80/v2-13c61dc183e03ec83fafbddc5248d0d1_720w.jpg" alt="结果图2"></p>
-<p><img src="https://pic1.zhimg.com/80/v2-d98d1318f191aef8dd3a5bb39e0320fc_720w.jpg" alt="结果图3"></p>
-<p>图1和图2结果似乎相同，图3的结果和其他很大不同，图1和图2都是显示了左上角那一张图片，而图3把剩下的3个空的坐标图也显示出来了。</p>
-<p>这里要<strong>重点说明</strong>一下，matplotlib中，几乎所有的画图操作都是在axes上完成的。</p>
-<p><strong>note</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fig, ax &#x3D; plt.subplots(1, 2)</span><br><span class="line">ax1 &#x3D; ax[1]		#ax1 &#x3D; ax[0, 1]这种写法是错误的</span><br><span class="line">ax1.plot([1, 2, 3])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p>只有当plt.subplots(x,y)的x和y都大于1时，才能用2维数组来生成ax1，ax2</p>
-<p>如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fig, ax &#x3D; plt.subplots(2, 2)</span><br><span class="line">ax1 &#x3D; ax[1,0]		</span><br><span class="line">ax1.plot([1, 2, 3])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/23/matplotlib-plt/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -490,10 +419,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-21 14:39:24 / 修改时间：14:48:00" itemprop="dateCreated datePublished" datetime="2021-06-21T14:39:24+08:00">2021-06-21</time>
+              <time title="创建时间：2021-06-21 14:39:24" itemprop="dateCreated datePublished" datetime="2021-06-21T14:39:24+08:00">2021-06-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:16" itemprop="dateModified" datetime="2021-06-29T23:10:16+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -516,7 +451,14 @@
 
       
           <h1 id="tips1"><a href="#tips1" class="headerlink" title="tips1"></a>tips1</h1><p><strong>在函数定义时，第一个带有默认值的参数之后的所有参数都必须有默认值，否则，运行时报错。</strong></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/21/python-tips/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -558,10 +500,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-08 15:42:49 / 修改时间：15:45:01" itemprop="dateCreated datePublished" datetime="2021-06-08T15:42:49+08:00">2021-06-08</time>
+              <time title="创建时间：2021-06-08 15:42:49" itemprop="dateCreated datePublished" datetime="2021-06-08T15:42:49+08:00">2021-06-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:16" itemprop="dateModified" datetime="2021-06-29T23:10:16+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -586,129 +534,19 @@
           <h1 id="format语法格式"><a href="#format语法格式" class="headerlink" title="format语法格式"></a>format语法格式</h1><p>str.format()<br>str是指字符串实例对象，常用格式为‘ ’.format()</p>
 <h2 id="format参数格式"><a href="#format参数格式" class="headerlink" title="format参数格式"></a>format参数格式</h2><p>‘{[index][ : [fill] align][sign][#][width][.precision][type]}  {……}{……} ‘.format()<br>以上参数的意义是：<br>注意，格式中的[  ]内的参数都是可选参数，可以使用也可以不使用</p>
 <ul>
-<li>index：指定冒号<strong>：</strong>后面出现的参数在‘format()’中的索引值，如果没有，则以format（）中的默认顺序自动分配</li>
-<li>fill：指定空白处的填充符。</li>
-<li>align:指定数字的对齐方式：</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">align</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&lt;</td>
-<td align="center">right-aligned 左对齐（对于大部分对象时为默认）</td>
-</tr>
-<tr>
-<td align="center">&gt;</td>
-<td align="center">right-aligned 右对齐 （对于数字时为默认）</td>
-</tr>
-<tr>
-<td align="center">=</td>
-<td align="center">数据右对齐，同时将符号放置在填充内容的最左侧，该选项只对数字类型有效</td>
-</tr>
-<tr>
-<td align="center">^</td>
-<td align="center">数据居中，此选项需和 width 参数一起使用</td>
-</tr>
-</tbody></table>
-<ul>
-<li>sign：指定有无符号数，此参数的值以及对应的含义如表所示</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">sign 参数</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">+</td>
-<td align="center">正数前面添加 ‘ + ’ ，负数前面加 ‘ - ’</td>
-</tr>
-<tr>
-<td align="center">-</td>
-<td align="center">正数前面不添加 ‘ + ’ ，负数前面加 ‘ - ’</td>
-</tr>
-<tr>
-<td align="center">space</td>
-<td align="center">正数前面添加 ‘ 空格 ’ ，负数前面加 ‘ - ’</td>
-</tr>
-<tr>
-<td align="center">#</td>
-<td align="center">对于二进制数、八进制数和十六进制数，使用此参数，各进制数前会分别显示 0b、0o、0x前缀；反之则不显示前缀</td>
-</tr>
-</tbody></table>
-<ul>
-<li>width：指定输出数据时所占的宽度</li>
-<li>. precision：如果后面存在type参数，则指的是保留小数的位数，如果type参数不存在，则是指有效数字的位数</li>
-<li>type：指定输出数据的具体类型</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">type类型值</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">s</td>
-<td align="center">对字符串类型格式化</td>
-</tr>
-<tr>
-<td align="center">d</td>
-<td align="center">十进制整数</td>
-</tr>
-<tr>
-<td align="center">c</td>
-<td align="center">将十进制整数自动转换成对应的 Unicode 字符</td>
-</tr>
-<tr>
-<td align="center">e or E</td>
-<td align="center">转换成科学计数法后，再格式化输出</td>
-</tr>
-<tr>
-<td align="center">g or G</td>
-<td align="center">自动在 e 和 f（或 E 和 F）中切换</td>
-</tr>
-<tr>
-<td align="center">b</td>
-<td align="center">将十进制数自动转换成二进制表示，再格式化输出</td>
-</tr>
-<tr>
-<td align="center">o</td>
-<td align="center">将十进制数自动转换成八进制表示，再格式化输出</td>
-</tr>
-<tr>
-<td align="center">x or X</td>
-<td align="center">将十进制数自动转换成十六进制表示，再格式化输出</td>
-</tr>
-<tr>
-<td align="center">f or F</td>
-<td align="center">转换为浮点数（默认小数点后保留 6 位），再格式化输出</td>
-</tr>
-<tr>
-<td align="center">%</td>
-<td align="center">显示百分比（默认显示小数点后 6 位)</td>
-</tr>
-</tbody></table>
-<h2 id="format实例"><a href="#format实例" class="headerlink" title="format实例"></a>format实例</h2><p>下面举一些实例来说明format各个参数的用法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// python ：^：代表居中显示数字567，位数width=10，fill=*（填充符为*）</span></span><br><span class="line"><span class="string">&#x27;&#123;:*^10&#125;&#x27;</span>.format(<span class="number">567</span>)</span><br><span class="line">结果：</span><br><span class="line"><span class="string">&#x27;***567****&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//python :0是填充符，2是width，表示位数为2</span></span><br><span class="line"><span class="string">&#x27;&#123;:02&#125;:&#123;:02&#125;:&#123;:02&#125;&#x27;</span>.format(<span class="number">13</span>,<span class="number">4</span>,<span class="number">57</span>)</span><br><span class="line">结果：</span><br><span class="line"><span class="string">&#x27;13:04:57&#x27;</span></span><br></pre></td></tr></table></figure>
-<h2 id="通过位置来填充字符串"><a href="#通过位置来填充字符串" class="headerlink" title="通过位置来填充字符串"></a>通过位置来填充字符串</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;hello &#123;0&#125; i am &#123;1&#125;&#x27;.format(&#x27;world&#x27;,&#x27;python&#x27;))    # 输入结果：hello world i am python</span><br><span class="line">print(&#x27;hello &#123;&#125; i am &#123;&#125;&#x27;.format(&#x27;world&#x27;,&#x27;python&#x27;) ) #输入结果：hello world i am python</span><br><span class="line">print(<span class="string">&#x27;hello &#123;0&#125; i am &#123;1&#125; . a now language-- &#123;1&#125;&#x27;</span>.format(<span class="string">&#x27;world&#x27;</span>,<span class="string">&#x27;python&#x27;</span>)</span><br><span class="line"># 输出结果：hello world i am python . a now language-- python</span><br></pre></td></tr></table></figure>
-<p>foramt会把参数按位置顺序来填充到字符串中，第一个参数是0，然后1 ……<br>也可以不输入数字，则会按照顺序自动分配，而且一个参数可以多次插入</p>
-<h2 id="通过key来填充"><a href="#通过key来填充" class="headerlink" title="通过key来填充"></a>通过key来填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj = <span class="string">&#x27;world&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello, &#123;obj&#125; ,i am &#123;name&#125;&#x27;</span>.format(obj = obj,name = name))</span><br><span class="line"># 输入结果：hello, world ,i am python</span><br></pre></td></tr></table></figure>
-<h2 id="通过列表填充"><a href="#通过列表填充" class="headerlink" title="通过列表填充"></a>通过列表填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj = <span class="string">&#x27;world&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello, &#123;obj&#125; ,i am &#123;name&#125;&#x27;</span>.format(obj = obj,name = name))</span><br><span class="line"># 输入结果：hello, world ,i am python</span><br></pre></td></tr></table></figure>
-<h2 id="通过列表填充-1"><a href="#通过列表填充-1" class="headerlink" title="通过列表填充"></a>通过列表填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list=[<span class="string">&#x27;world&#x27;</span>,<span class="string">&#x27;python&#x27;</span>]</span><br><span class="line">print(&#x27;hello &#123;names[0]&#125;  i am &#123;names[1]&#125;&#x27;.format(names=list))# 输出结果：hello world  i am python</span><br><span class="line">print(&#x27;hello &#123;0[0]&#125;  i am &#123;0[1]&#125;&#x27;.format(list)) #输出结果：hello world  i am python</span><br></pre></td></tr></table></figure>
-<h2 id="通过字典填充"><a href="#通过字典填充" class="headerlink" title="通过字典填充"></a>通过字典填充</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dict=&#123;‘obj’:’world’,’name’:’python’&#125; </span><br><span class="line">print(‘hello &#123;names[obj]&#125; i am &#123;names[name]&#125;’.format(names=dict)) </span><br><span class="line">结果hello world i am python </span><br></pre></td></tr></table></figure>
-<h2 id="通过类的属性填充"><a href="#通过类的属性填充" class="headerlink" title="通过类的属性填充"></a>通过类的属性填充</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Names():</span><br><span class="line">    obj=<span class="string">&#x27;world&#x27;</span></span><br><span class="line">    name=<span class="string">&#x27;python&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;hello &#123;names.obj&#125; i am &#123;names.name&#125;&#x27;</span>.format(names=Names))</span><br><span class="line">#输入结果hello world i am python</span><br></pre></td></tr></table></figure>
-<h2 id="使用魔法参数"><a href="#使用魔法参数" class="headerlink" title="使用魔法参数"></a>使用魔法参数</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">args = [‘,’,’inx’] </span><br><span class="line">kwargs = &#123;‘obj’: ‘world’, ‘name’: ‘python’&#125; </span><br><span class="line">print(‘hello &#123;obj&#125; &#123;&#125; i am &#123;name&#125;’.format(*args, **kwargs))#输入结果：hello world , i am python</span><br></pre></td></tr></table></figure>
-<p>注意：魔法参数跟你函数中使用的性质是一样的：这里format(*args, **kwargs)) 等价于：format(‘,’,’inx’,obj = ‘world’,name = ‘python’)</p>
-<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p>参考一下连接blog和官方文档整理，以便自己以后查询<br> [1]: <a target="_blank" rel="noopener" href="https://blog.csdn.net/it_python/article/details/81037078">https://blog.csdn.net/it_python/article/details/81037078</a><br> [2]: <a target="_blank" rel="noopener" href="http://c.biancheng.net/view/4301.html">http://c.biancheng.net/view/4301.html</a><br> [3]: <a target="_blank" rel="noopener" href="https://docs.python.org/3.4/library/string.html#formatspec">https://docs.python.org/3.4/library/string.html#formatspec</a></p>
-
+<li><p>index：指定冒号<strong>：</strong>后面出现的参数在‘format()’中的索引值，如果没有，则以format（）中的默认顺序自动分配</p>
+</li>
+<li><p>fill：指定空白处的填充符。</p>
+</li>
+<li><p>align:指定数字的对齐方式：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/08/python-format%E7%94%A8%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -750,10 +588,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-05 18:52:00 / 修改时间：19:19:50" itemprop="dateCreated datePublished" datetime="2021-06-05T18:52:00+08:00">2021-06-05</time>
+              <time title="创建时间：2021-06-05 18:52:00" itemprop="dateCreated datePublished" datetime="2021-06-05T18:52:00+08:00">2021-06-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:17" itemprop="dateModified" datetime="2021-06-29T23:10:17+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -776,94 +620,14 @@
 
       
           <h1 id="itertools-学习笔记"><a href="#itertools-学习笔记" class="headerlink" title="itertools 学习笔记"></a>itertools 学习笔记</h1><h2 id="python-itertools模块chain函数功能详解-itertools-chain-iterable"><a href="#python-itertools模块chain函数功能详解-itertools-chain-iterable" class="headerlink" title="python itertools模块chain函数功能详解 itertools.chain(*iterable)"></a>python itertools模块chain函数功能详解 itertools.chain(*iterable)</h2><p>Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。</p>
-<p>Itertools.chain语法如下</p>
-<p>Itertools.chain(*iterables)</p>
-<ul>
-<li>*代表接受可变的参数；</li>
-</ul>
-<ul>
-<li>iterables，迭代对象（序列），可以使用for in 遍历的对象，包括list, string, dict。</li>
-</ul>
-<p>功能1：去除iterable对象里的内嵌列表</p>
-<pre><code>import itertools as it
-a=[[1,2],[5,6],[8,9]]
-a_update=it.chain(*a)
-print(type(a_update)) #itertools返回的对象是个类
-print(list(a_update)) #转化成列表输出
-#结果
-&lt;class &#39;itertools.chain&#39;&gt;
-[1, 2, 5, 6, 8, 9]
-</code></pre>
-<p>功能2：合并两个序列（结合zip函数进行配对）</p>
-<p>假如有列表a代表编号为1-5的5名女生，有列表b代表编号为a-e的5名男生，现在让5名男生依次插入5名女生中间，两队合成一队，如何用代码表示？</p>
-<pre><code>import itertools as it
-a=[1,2,3,4,5] #女生
-b=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;] #男生
-ab=zip(a,b)
-final=it.chain(*ab)
-print(list(final))
-
-#结果
-[1, &#39;a&#39;, 2, &#39;b&#39;, 3, &#39;c&#39;, 4, &#39;d&#39;, 5, &#39;e&#39;]
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/21/TTE-RL-schedule/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="特大号的研究僧">
-      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="特大号鲨鱼的池塘">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/21/TTE-RL-schedule/" class="post-title-link" itemprop="url">TTE_RL_schedule</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-21 19:56:58" itemprop="dateCreated datePublished" datetime="2021-05-21T19:56:58+08:00">2021-05-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/05/itertools/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -905,10 +669,16 @@ print(list(final))
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-05-14 18:13:20 / 修改时间：19:30:57" itemprop="dateCreated datePublished" datetime="2021-05-14T18:13:20+08:00">2021-05-14</time>
+              <time title="创建时间：2021-05-14 18:13:20" itemprop="dateCreated datePublished" datetime="2021-05-14T18:13:20+08:00">2021-05-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:16" itemprop="dateModified" datetime="2021-06-29T23:10:16+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -933,51 +703,14 @@ print(list(final))
           <h1 id="什么是强化学习"><a href="#什么是强化学习" class="headerlink" title="什么是强化学习"></a>什么是强化学习</h1><p><img src="https://www.novatec-gmbh.de/wp-content/uploads/1_mPGk9WTNNvp3i4-9JFgD3w.png" alt="强化学习"></p>
 <p>举一个很简单的例子，如果你养了一只宠物—旺财，旺财是一只刚出生的宠物（不一定是狗），啥也不知道，纯洁的像一张白纸。现在你想训练它达到一个目的，例如你想让旺财学猫叫。那么如果旺财“喵”了一声，你就给它最喜欢吃的骨头。如果它“旺”了一声，不仅没有骨头吃，还要严厉的惩罚。久而久之，旺财知道了，喵=骨头，汪=惩罚。</p>
 <p>我们作为主人来模仿环境，例如以命令的形式给我们的旺财一个状态St。我们的旺财是接收状态的对象，随即采取类似喵或者汪的动作。旺财选择任一种动作的过程叫做决策。我们对旺财进行奖励或者惩罚称为赏罚（reward有好有坏），如此循环。</p>
-<h1 id="什么是Q-learning"><a href="#什么是Q-learning" class="headerlink" title="什么是Q-learning"></a>什么是Q-learning</h1><p>Q-learning其实就是把上述那些过程用一个Q表的形式表示出来而已。</p>
-<p>在了解什么是Q表之前，我们先说明一下简称，<strong>S，R，A分别表示当前的状态，奖励，动作；S_，R_，A_分别表示下一状态，奖励，动作</strong>。</p>
-<p>首先对一个Q表进行初始化（这里面的值可以全为0，或者随机）</p>
-<table>
-<thead>
-<tr>
-<th align="center">（空）</th>
-<th align="center">a1</th>
-<th align="center">a2</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">s1</td>
-<td align="center">-2</td>
-<td align="center">1</td>
-</tr>
-<tr>
-<td align="center">s2</td>
-<td align="center">-4</td>
-<td align="center">1</td>
-</tr>
-</tbody></table>
-<h1 id="Q-learning举例分析"><a href="#Q-learning举例分析" class="headerlink" title="Q-learning举例分析"></a>Q-learning举例分析</h1><p>假设我们当前状态S = s1，此时我们需要作出动作A，可以选择的动作有a1和a2，现在我们有一个Q值表（这个只是一个大概的，并不是最终的Q值，我们的目的就是修改这一个Q值表，得到一个准确的数据），如果作出a1动作，我们内心大概估计得到的Q值为-2，如果作出a2动作，会得到Q值为1（这里我们认为Q值越大，代表的结果越好）。</p>
-<p>那么我们果断作出a2的动作（注意，有时候尽管某一个Q值很大，但是有些人会存在逆反心理，就是要选择小的，所以这里存在一定的概念选择a1）。我们假设选择了a2动作，碰巧我们的s1做完a2动作后进入s2的状态，只有我们进入s2状态后才知道到底是奖励还是惩罚，设为R。<br>刚刚这样的一轮操作已经完成了一次强化学习的过程，那么学习体现在哪呢？</p>
-<p>之前我们提到过，我们的目的是对Q值表进行更新，对Q表的更新就是一次学习的过程，我们在s1状态下作出了a1的动作，就能学习到这一次过程的好坏，为了以后我们在所有状态都能作出最好的动作而得到奖励。</p>
-<h1 id="Q-learning-更新"><a href="#Q-learning-更新" class="headerlink" title="Q-learning 更新"></a>Q-learning 更新</h1><p><strong>接下来是真正的重点</strong></p>
-<p><img src="https://static.mofanpy.com/results/ML-intro/q3.png" alt="Q更新"></p>
-<p>前面提到了，我们在s1状态下作出了a1的动作，就能学习到这一次过程的好坏，那么我们就应该更新Q表中（s1，a2）的Q值。设当前表格中的Q（s1，a1）=1表示为Q_eval(我们叫它Q估计，因为这是我们在经过一次学习过程之前的Q值，可能是对的也可能是错的，所以叫它Q估计)，而经过一次学习之后，我们有了这次动作得到的奖励R，以及下一个状态s2，如何利用好这两个条件来估计得到对于（s1，a2）这个动作的Q呢。毋庸置疑R越大，肯定Q越大，所以R肯定独占一项；那S2状态就一点用都没有吗，答案肯定是否认的。我们可以利用Q表中s2的关于所有的动作的值，选择其中最大的那个（也就是表中的（s2，a2）），乘上一个衰减系数gamma（这里我的理解是，虽然Q并不是奖励R，但是在我们心中，认为Q值越大那么和大的奖励值相关性越强，也更能说明我们在s1作出a2动作的好处，加上一个系数更方便我们调节），这也就是我们的第二项。</p>
-<p>我们将上述两项加在一起，称为Q_target(Q目标值)。有了Q_eval和Q_target，将两者做差值，再乘上一个学习率alpha，最后加上原来的Q（也就是Q_eval），就算更新完了一次Q表中的Q（s1，a2）。</p>
-<p>之后的过程就是循环多次学习，更新整个Q值表，使其更加贴切现实环境，能够更快的拿到想要的奖励。</p>
-<h1 id="Q-learning决策"><a href="#Q-learning决策" class="headerlink" title="Q-learning决策"></a>Q-learning决策</h1><p>在Q-learning中我们忽略一个重要的内容，就是决策（如何选择动作a）。</p>
-<p>之前可能提过Q值越大间接表示了可能离奖励越近，但是Q并不等于R。如果我们在s1状态的时候选择大Q值得动作，如果a2真的能将我们更好的得到奖励，那肯定是很好的；但是我们要知道，最开始的时候，我们对于这个环境是一点都不了解的，初始的Q值表是随机生成的（也可能全是0），所以不能完全用最大Q值来决定我们的下一步动作，也需要留一点余地，给出一个小概率，让模型选择一个非常之路，没准非常之路更好更快。</p>
-<p><img src="https://static.mofanpy.com/results/reinforcement-learning/2-1-1.png" alt="Qlearning算法"></p>
-<p>因为在初始阶段, 随机的探索环境, 往往比固定的行为模式要好, 所以这也是累积经验的阶段, 我们希望探索者不会那么贪婪(greedy). 所以 EPSILON 就是用来控制贪婪程度的值. EPSILON 可以随着探索时间不断提升(越来越贪婪)。</p>
-<pre><code>`python编码
-&#39;# 在某个 state 地点, 选择行为
-def choose_action(state, q_table):`
-    state_actions = q_table.iloc[state, :]  # 选出这个 state 的所有 action 值
-    if (np.random.uniform() &gt; EPSILON) or (state_actions.all() == 0):  # 非贪婪 or 或者这个 state 还没有探索过
-        action_name = np.random.choice(ACTIONS)
-    else:
-        action_name = state_actions.argmax()    # 贪婪模式
-    return action_name`
-</code></pre>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/14/Q-learning-1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1019,10 +752,16 @@ def choose_action(state, q_table):`
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-05-08 11:41:04 / 修改时间：17:50:30" itemprop="dateCreated datePublished" datetime="2021-05-08T11:41:04+08:00">2021-05-08</time>
+              <time title="创建时间：2021-05-08 11:41:04" itemprop="dateCreated datePublished" datetime="2021-05-08T11:41:04+08:00">2021-05-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:17" itemprop="dateModified" datetime="2021-06-29T23:10:17+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1047,18 +786,14 @@ def choose_action(state, q_table):`
           <h1 id="续DQN"><a href="#续DQN" class="headerlink" title="续DQN"></a>续DQN</h1><p><img src="https://mofanpy.com/static/results/reinforcement-learning/4-3-2.png" alt="graph"></p>
 <p>上图为整个神经网络的结构图，很明显可以看到神经网络包含2个网络结构—target_net和eval_net。</p>
 <p>eval_net是一个实时神经网络，每次进行强化学习的过程，它的参数都会更新训练，所以它是一个实时神经网络。</p>
-<p>target_net是一个延迟神经网络，它的网络结构和eval_net是一样的，但是参数更新相对于eval_net是延后的，例如可能在eval_net进行200次的更新后，target_net才更新一次，这一次更新就是将此时的eval_net的参数赋值给target_net。</p>
-<p>关于神经网络训练的内容则需要查看其他资料。</p>
-<h1 id="Double-DQN"><a href="#Double-DQN" class="headerlink" title="Double DQN"></a>Double DQN</h1><p>由于DQN是一种基于Q learing的强化学习方法，那么在Q learning中存在着Qmax，Qmax会导致当前Q值得过估计(overestimate)。而Double DQN就是为了解决这个问题而提出来的。在实际问题中，如果你输出的DQN的Q值，你会发现，输出的Q值都十分大，这也就过估计导致的。</p>
-<h2 id="Double-DQN-和-DQN的区别"><a href="#Double-DQN-和-DQN的区别" class="headerlink" title="Double DQN 和 DQN的区别"></a>Double DQN 和 DQN的区别</h2><p>我们知道DQN的神经网络部分看成一个最新神经网络(eval_net)和老神经网络(target_net)，他们有相同的结构，但是内部的参数更新存在时差。所以它的<strong>Q现实</strong>部分是：</p>
-<p><img src="https://mofanpy.com/static/results/reinforcement-learning/4-5-1.png" alt="DNQ Q现实"></p>
-<p>我们知道导致过估计的主要原因及时后面部分的Qmax，因为我们的神经网络预测Qmax本来就会有误差，每次也向着最大误差的<strong>Q现实</strong>进行改进神经网络，正式因为这个Qmax导致了过估计。所以Double DQN的办法就是引入另一个神经网络来打消一些最大误差的影响。而DQN中本来就有两个神经网络，我们可以利用其中一个神经网络。</p>
-<p>对于Q估计的神经网络估计Q现实中Qmax(s_,a_)的最大动作值A，然后用这个被Q估计网络估计出的动作来选择Q现实中的Q（s_）。</p>
-<p>简单来说，存在两个神经网络：eval_net(Q估计),target_net(Q现实):</p>
-<p>对于DQN来说原本Q_next = max(Q_next(s_))</p>
-<p>对于Double DQN则，Q_next = Q_next(s_,argmax(Q_eval(s_)))</p>
-<p><img src="https://mofanpy.com/static/results/reinforcement-learning/4-5-2.png" alt="Double DQN"></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/08/DQN-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1108,7 +843,7 @@ def choose_action(state, q_table):`
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-08 11:37:55" itemprop="dateModified" datetime="2021-05-08T11:37:55+08:00">2021-05-08</time>
+                <time title="修改时间：2021-06-29 23:10:17" itemprop="dateModified" datetime="2021-06-29T23:10:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1133,24 +868,96 @@ def choose_action(state, q_table):`
       
           <h1 id="什么是DQN"><a href="#什么是DQN" class="headerlink" title="什么是DQN"></a>什么是DQN</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN1.png" alt="强化学习和神经网络"></p>
 <p>DQN（Deep Q Network）是一种用Q Learing和神经网络结合的一种强化学习的方法，相比于传统的Q Learning运用了神经网络的方法。</p>
-<h1 id="神经网络的作用"><a href="#神经网络的作用" class="headerlink" title="神经网络的作用"></a>神经网络的作用</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN2.png" alt="神经网络和Q learning"></p>
-<p>对比于传统的Q Learning,DQN还额外附加了一个NN（Neural Network），它的通过输入的状态S得到各个不同的动作Actions的Q值<strong>（注意：Q值和奖励Reward不同）</strong>。</p>
-<p>另一个作用，在DQN中存在一个存储器，存储了模型在自我学习过程中的S（当前状态），A（采取的某一个行动），R（该动作的奖励），S_（下一状态），（i.e，记作[S,A,R,S_]）。</p>
-<h1 id="算法更新"><a href="#算法更新" class="headerlink" title="算法更新"></a>算法更新</h1><h2 id="Q-learning简介"><a href="#Q-learning简介" class="headerlink" title="Q-learning简介"></a>Q-learning简介</h2><p><img src="https://mofanpy.com/static/results/ML-intro/q3.png" alt="Q-learning简介"></p>
-<p>简单说明一下传统的Q Learning：Q-Learing中的Q值分为两种Q_predict(Q估计值)和Q_target（Q现实值）,在上图中显示很清楚，Q现实值需要通过下一个状态(S_)和奖励R通过公式计算得到，而Q估计值是指当前转态S要采取某一个动作的值。<strong>（注意：一定要明白这一点，图中这个更新过程只是对Q(s1,a2)的更新）</strong><br>其中，<strong>gamma,alpha</strong>都是超参数（也就是自己设定的值）<br><img src="https://mofanpy.com/static/results/reinforcement-learning/2-1-1.png" alt="算法"></p>
-<h2 id="DQN算法"><a href="#DQN算法" class="headerlink" title="DQN算法"></a>DQN算法</h2><p><img src="https://mofanpy.com/static/results/ML-intro/DQN3.png" alt="DQN算法"></p>
-<p>有了Q Learning的一点基础后，相对来说，DQN只是多了一个卷积神经网络（或者其他神经网络），神经网络的作用上面已经说过了。DQN并没有像Q learning一样的Q值表（Q_table），但是它的Q值都是通过神经网络来计算得出的，如果确定了神经网络的参数，那么也就确定了各个状态S对应的动作Actions的Q值，也就相当于确定了一个Q值表。这样对于一个有大量状态和大量动作的模型来说就方便了太多太多。</p>
-<h2 id="神经网络参数更新"><a href="#神经网络参数更新" class="headerlink" title="神经网络参数更新"></a>神经网络参数更新</h2><p><img src="https://mofanpy.com/static/results/ML-intro/DQN4.png" alt="参数更新"></p>
-<p>注意，以上的Q值都是通过神经网络的过程计算得到的，并不是查询Q值表得到的。我们通过公式得到Q现实和Q估计，有了这两个数据，就能通过神经网络的方法来更新神经网络的参数，也就间接的相当于更新Q值表。</p>
-<p><img src="https://mofanpy.com/static/results/reinforcement-learning/4-1-1.jpg" alt="DQN算法更新"></p>
-<h1 id="DQN两大利器"><a href="#DQN两大利器" class="headerlink" title="DQN两大利器"></a>DQN两大利器</h1><p><img src="https://mofanpy.com/static/results/ML-intro/DQN5.png" alt="DNQ两大利器"></p>
-<p>我们可以把DNQ想成两条主线，一条主线负责行动（例如在下围棋时，就是负责下围棋），另一条主线则是通过之前的动作来对神经网络进行学习训练。</p>
-<p>Q learning 是一种 off-policy 离线学习法, 它能学习当前经历着的, 也能学习过去经历过的, 甚至是学习别人的经历. 所以每次 DQN 更新的时候, 我们都可以随机抽取一些之前的经历进行学习. 随机抽取这种做法打乱了经历之间的相关性, 也使得神经网络更新更有效率. Fixed Q-targets 也是一种打乱相关性的机理, 如果使用 fixed Q-targets, 我们就会在 DQN 中使用到两个结构相同但参数不同的神经网络, 预测 Q 估计 的神经网络具备最新的参数, 而预测 Q 现实 的神经网络使用的参数则是很久以前的. 有了这两种提升手段, DQN 才能在一些游戏中超越人类.</p>
-<h1 id="简单例子描述"><a href="#简单例子描述" class="headerlink" title="简单例子描述"></a>简单例子描述</h1><p><img src="https://mofanpy.com/static/results/ML-intro/q3.png" alt="Q-learning简介"><br>我们以之前的Q learning为例，我们的目标是更新神经网络参数（在Q learning中为Q值表），假设我们已经记录了2个数据，为S1和S2就是图中这个表，我们将这两个状态输入当前的神经网络中，会得到一组全新的Q值表，这就是Q估计值，那么Q现实值是什么呢？</p>
-<p>在我们的记录中也记录这某状态下采取某行动的奖励R，例如（S1，a2）状态的奖励，通过各个奖励R和S_的Q值，在通过图中公式，能够得到Q现实值，之后再更新神经网络的参数，这样一次也就完成了。<br>之后就是循环往复的过程。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>该文章只是个人简短理解，如果想了解更多和具体代码例子，建议点击下面链接</p>
-<p><a target="_blank" rel="noopener" href="https://mofanpy.com/tutorials/machine-learning/reinforcement-learning/intro-DQN/" title="参考文献">https://mofanpy.com/tutorials/machine-learning/reinforcement-learning/intro-DQN/</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/07/DQN-1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/05/Booklist2021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/05/Booklist2021/" class="post-title-link" itemprop="url">Booklist2021</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-05 17:33:33" itemprop="dateCreated datePublished" datetime="2021-05-05T17:33:33+08:00">2021-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:08:59" itemprop="dateModified" datetime="2021-06-29T23:08:59+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%98%85%E8%AF%BB%E8%80%85/" itemprop="url" rel="index"><span itemprop="name">阅读者</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>下面记录了我2021年的读书清单，读完一本之后才更新，直到2021年结束</strong></p>
+<p><strong>希望我能通过这样的方式促进自己能多读书，读好书，好读书</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/05/Booklist2021/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1167,9 +974,6 @@ def choose_action(state, q_table):`
 
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1236,7 +1040,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

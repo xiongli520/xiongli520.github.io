@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://static.mofanpy.com/results/ML-intro/q3.png">
 <meta property="og:image" content="https://static.mofanpy.com/results/reinforcement-learning/2-1-1.png">
 <meta property="article:published_time" content="2021-05-14T10:13:20.000Z">
-<meta property="article:modified_time" content="2021-05-14T11:30:57.977Z">
+<meta property="article:modified_time" content="2021-06-29T15:10:16.107Z">
 <meta property="article:author" content="特大号的研究僧">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Reinforcement Learning">
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
   </ul>
@@ -188,10 +188,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-05-14 18:13:20 / 修改时间：19:30:57" itemprop="dateCreated datePublished" datetime="2021-05-14T18:13:20+08:00">2021-05-14</time>
+              <time title="创建时间：2021-05-14 18:13:20" itemprop="dateCreated datePublished" datetime="2021-05-14T18:13:20+08:00">2021-05-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:16" itemprop="dateModified" datetime="2021-06-29T23:10:16+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -216,6 +222,7 @@
         <h1 id="什么是强化学习"><a href="#什么是强化学习" class="headerlink" title="什么是强化学习"></a>什么是强化学习</h1><p><img src="https://www.novatec-gmbh.de/wp-content/uploads/1_mPGk9WTNNvp3i4-9JFgD3w.png" alt="强化学习"></p>
 <p>举一个很简单的例子，如果你养了一只宠物—旺财，旺财是一只刚出生的宠物（不一定是狗），啥也不知道，纯洁的像一张白纸。现在你想训练它达到一个目的，例如你想让旺财学猫叫。那么如果旺财“喵”了一声，你就给它最喜欢吃的骨头。如果它“旺”了一声，不仅没有骨头吃，还要严厉的惩罚。久而久之，旺财知道了，喵=骨头，汪=惩罚。</p>
 <p>我们作为主人来模仿环境，例如以命令的形式给我们的旺财一个状态St。我们的旺财是接收状态的对象，随即采取类似喵或者汪的动作。旺财选择任一种动作的过程叫做决策。我们对旺财进行奖励或者惩罚称为赏罚（reward有好有坏），如此循环。</p>
+<span id="more"></span>
 <h1 id="什么是Q-learning"><a href="#什么是Q-learning" class="headerlink" title="什么是Q-learning"></a>什么是Q-learning</h1><p>Q-learning其实就是把上述那些过程用一个Q表的形式表示出来而已。</p>
 <p>在了解什么是Q表之前，我们先说明一下简称，<strong>S，R，A分别表示当前的状态，奖励，动作；S_，R_，A_分别表示下一状态，奖励，动作</strong>。</p>
 <p>首先对一个Q表进行初始化（这里面的值可以全为0，或者随机）</p>
@@ -283,8 +290,8 @@ def choose_action(state, q_table):`
       <i class="fa fa-chevron-left"></i> DQN(Deep Q Network)---（2）
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/05/21/TTE-RL-schedule/" rel="next" title="TTE_RL_schedule">
-      TTE_RL_schedule <i class="fa fa-chevron-right"></i>
+    <a href="/2021/06/05/itertools/" rel="next" title="itertools">
+      itertools <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -360,7 +367,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

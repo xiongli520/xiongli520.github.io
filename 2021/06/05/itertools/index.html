@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="itertools 学习笔记python itertools模块chain函数功能详解 itertools.chain(*iterable)Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。 Itertools.chain语法如下 Itertools.chain(*iterables)  *代表接受可变的参数；   iterable">
+  <meta name="description" content="itertools 学习笔记python itertools模块chain函数功能详解 itertools.chain(*iterable)Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="itertools">
 <meta property="og:url" content="http://example.com/2021/06/05/itertools/index.html">
 <meta property="og:site_name" content="特大号鲨鱼的池塘">
-<meta property="og:description" content="itertools 学习笔记python itertools模块chain函数功能详解 itertools.chain(*iterable)Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。 Itertools.chain语法如下 Itertools.chain(*iterables)  *代表接受可变的参数；   iterable">
+<meta property="og:description" content="itertools 学习笔记python itertools模块chain函数功能详解 itertools.chain(*iterable)Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-05T10:52:00.000Z">
-<meta property="article:modified_time" content="2021-06-05T11:19:50.535Z">
+<meta property="article:modified_time" content="2021-06-29T15:10:17.074Z">
 <meta property="article:author" content="特大号的研究僧">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="itertools">
@@ -131,7 +131,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
 
   </li>
   </ul>
@@ -184,10 +184,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-05 18:52:00 / 修改时间：19:19:50" itemprop="dateCreated datePublished" datetime="2021-06-05T18:52:00+08:00">2021-06-05</time>
+              <time title="创建时间：2021-06-05 18:52:00" itemprop="dateCreated datePublished" datetime="2021-06-05T18:52:00+08:00">2021-06-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 23:10:17" itemprop="dateModified" datetime="2021-06-29T23:10:17+08:00">2021-06-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -210,6 +216,7 @@
 
       
         <h1 id="itertools-学习笔记"><a href="#itertools-学习笔记" class="headerlink" title="itertools 学习笔记"></a>itertools 学习笔记</h1><h2 id="python-itertools模块chain函数功能详解-itertools-chain-iterable"><a href="#python-itertools模块chain函数功能详解-itertools-chain-iterable" class="headerlink" title="python itertools模块chain函数功能详解 itertools.chain(*iterable)"></a>python itertools模块chain函数功能详解 itertools.chain(*iterable)</h2><p>Itertools模块， itertools提供了高效快捷的用于操作迭代对象的函数。通过使用这个模块，可以简化代码。</p>
+<span id="more"></span>
 <p>Itertools.chain语法如下</p>
 <p>Itertools.chain(*iterables)</p>
 <ul>
@@ -259,8 +266,8 @@ print(list(final))
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/05/21/TTE-RL-schedule/" rel="prev" title="TTE_RL_schedule">
-      <i class="fa fa-chevron-left"></i> TTE_RL_schedule
+    <a href="/2021/05/14/Q-learning-1/" rel="prev" title="Q-learning">
+      <i class="fa fa-chevron-left"></i> Q-learning
     </a></div>
       <div class="post-nav-item">
     <a href="/2021/06/08/python-format%E7%94%A8%E6%B3%95/" rel="next" title="python_format用法">
@@ -340,7 +347,7 @@ print(list(final))
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
