@@ -117,7 +117,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">13</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -127,7 +127,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
 
   </li>
   </ul>
@@ -153,6 +153,136 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/29/tensorflow2-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/tensorflow2-02/" class="post-title-link" itemprop="url">tensorflow2-02</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-29 22:41:12 / 修改时间：23:01:13" itemprop="dateCreated datePublished" datetime="2021-06-29T22:41:12+08:00">2021-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TensorFlow2/" itemprop="url" rel="index"><span itemprop="name">TensorFlow2+</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="tensorflow自动求导—tf-GradientTape"><a href="#tensorflow自动求导—tf-GradientTape" class="headerlink" title="tensorflow自动求导—tf.GradientTape"></a>tensorflow自动求导—tf.GradientTape</h1><h2 id="一阶导数"><a href="#一阶导数" class="headerlink" title="一阶导数"></a>一阶导数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.constant(3.0)</span><br><span class="line">with tf.GradientTape() as g:  # （1）创建一个GradientTape对象</span><br><span class="line">    g.watch(x)  # （2）监视watch要求导的变量</span><br><span class="line">    y &#x3D; x * x</span><br><span class="line">dy_dx &#x3D; g.gradient(y, x) # （3）对函数进行求导</span><br></pre></td></tr></table></figure>
+
+<h2 id="对同一计算图多次求导"><a href="#对同一计算图多次求导" class="headerlink" title="对同一计算图多次求导"></a>对同一计算图多次求导</h2><p>GradientTape 默认（persistent = False）在进行一次求导后就销毁计算图，从而节约内存。如果要在同一个计算图下进行多次求导，就要设定 persistent = True 。但是注意要手动释放资源del tape。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; tf.constant(3.0)</span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">  g.watch(x)</span><br><span class="line">  y &#x3D; x * x</span><br><span class="line">  z &#x3D; y * y</span><br><span class="line">dz_dx &#x3D; g.gradient(z, x)  # 108.0 (4*x^3 at x &#x3D; 3)</span><br><span class="line">dy_dx &#x3D; g.gradient(y, x)  # 6.0</span><br><span class="line">del g  # Drop the reference to the tape</span><br></pre></td></tr></table></figure>
+
+<h1 id="GradientTape关键方法"><a href="#GradientTape关键方法" class="headerlink" title="GradientTape关键方法"></a>GradientTape关键方法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class GradientTape(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, persistent&#x3D;False, watch_accessed_variables&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;构建函数&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __enter__(self):</span><br><span class="line">        &quot;&quot;&quot;用于支持with上下文管理器，进入记录的计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __exit__(self, typ, value, traceback):</span><br><span class="line">        &quot;&quot;&quot;用于支持with上下文管理器，离开计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def watch(self, tensor):</span><br><span class="line">        &quot;&quot;&quot;设定需要“监控”的变量&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def stop_recording(self):</span><br><span class="line">        &quot;&quot;&quot;一个类似with的上下文管理器，tape将不会记录其中的运算操作&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def reset(self):</span><br><span class="line">        &quot;&quot;&quot;清除已有的计算图&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def watched_variables(self):</span><br><span class="line">        &quot;&quot;&quot;返回被“监控”的变量&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def gradient(self, target, sources, output_gradients&#x3D;None,</span><br><span class="line">               unconnected_gradients&#x3D;UnconnectedGradients.NONE):</span><br><span class="line">        &quot;&quot;&quot;计算梯度，返回的梯度与 sources 同结构&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def jacobian(self, target, sources, unconnected_gradients&#x3D;UnconnectedGradients.NONE,</span><br><span class="line">               parallel_iterations&#x3D;None, experimental_use_pfor&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;计算jacobian矩阵&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def batch_jacobian(target, source, unconnected_gradients&#x3D;tf.UnconnectedGradients.NONE,                          parallel_iterations&#x3D;None, experimental_use_pfor&#x3D;True):</span><br><span class="line">        &quot;&quot;&quot;批量计算jacobian&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="init-persistent-False-watch-accessed-variables-True"><a href="#init-persistent-False-watch-accessed-variables-True" class="headerlink" title="init( persistent=False, watch_accessed_variables=True)"></a><strong>init</strong>( persistent=False, watch_accessed_variables=True)</h2><ul>
+<li>persistent: <ul>
+<li>False（默认） : 求导一次后就会 自动 销毁计算图，不能再求导第二次，这主要是出于节省内存的考虑。</li>
+<li>True : 计算图将不会被 自动 销毁，可以进行多次求导</li>
+</ul>
+</li>
+<li>watch_accessed_variables:<ul>
+<li>True（默认） : 自动“监控”计算过程中出现的所有可训练变量</li>
+<li>False : 需要使用tape.watch()来人为指定需要“监控”的变量</li>
+</ul>
+</li>
+</ul>
+<h2 id="gradient-target-sources-output-gradients-None-unconnected-gradients-tf-UnconnectedGradients-NONE"><a href="#gradient-target-sources-output-gradients-None-unconnected-gradients-tf-UnconnectedGradients-NONE" class="headerlink" title="gradient( target, sources, output_gradients=None, unconnected_gradients=tf.UnconnectedGradients.NONE)"></a>gradient( target, sources, output_gradients=None, unconnected_gradients=tf.UnconnectedGradients.NONE)</h2><ul>
+<li>target:<ul>
+<li>Tensor (or list of tensors) 求导的因变量 target node 。</li>
+</ul>
+</li>
+<li>sources:<ul>
+<li>Tensor (or list of tensors) 求导的自变量 sources node 。</li>
+</ul>
+</li>
+<li>unconnected_gradients:<ul>
+<li>无法求导时，返回的值，有两个可选值[“none”, “zero”]，默认”none”。例如，当 target node 与 sources node 之间在计算图上没有办法联通时，将会返回None。<strong>个人认为，设置为”zero”更合适。</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x&#x3D;tf.Variable(initial_value&#x3D;[1.0,2.0,3.0])</span><br><span class="line"></span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">    g.watch(x)</span><br><span class="line">    z&#x3D;tf.pow(y,2)  # z与x根本就没有关系，即在graph上面没有连接</span><br><span class="line"></span><br><span class="line">dz_dx &#x3D; g.gradient(z, [x,y],unconnected_gradients&#x3D;&quot;none&quot;)  # 默认就是none</span><br><span class="line">print(dz_dx)</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">返回值为：None</span><br><span class="line"></span><br><span class="line">由上面可以看出，由于z与x之间并没有连通，所以返回的是None</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>output_gradients: <ul>
+<li>对求得的梯度乘以一系列权重，默认为None，不进行操作。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">x&#x3D;tf.Variable(initial_value&#x3D;[1.0,2.0,3.0])</span><br><span class="line"></span><br><span class="line">with tf.GradientTape(persistent&#x3D;True) as g:</span><br><span class="line">    g.watch(x)</span><br><span class="line">    z&#x3D;tf.pow(x,2)</span><br><span class="line"></span><br><span class="line">output_gradients&#x3D;tf.Variable([-0.2,0.6,0.2])</span><br><span class="line">dz_dx &#x3D; g.gradient(z, x,output_gradients&#x3D;output_gradients)   #给每一个元素施加不同的权重</span><br><span class="line">print(dz_dx)</span><br><span class="line">&#39;&#39;&#39;运行结果为：</span><br><span class="line">&lt;tf.Tensor: id&#x3D;64, shape&#x3D;(3,), dtype&#x3D;float32, numpy&#x3D;array([-0.4, 2.4, 1.2], </span><br><span class="line">  dtype&#x3D;float32)&gt;</span><br><span class="line"></span><br><span class="line">本来的结果是dz_dx&#x3D;[2,4,6], 分别乘以权重[0.2,0.6,0.2]之后，得到[-0.4,2.4,1.2]</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="jacobian-target-sources-unconnected-gradients-tf-UnconnectedGradients-NONE-parallel-iterations-None-experimental-use-pfor-True"><a href="#jacobian-target-sources-unconnected-gradients-tf-UnconnectedGradients-NONE-parallel-iterations-None-experimental-use-pfor-True" class="headerlink" title="jacobian(target, sources, unconnected_gradients=tf.UnconnectedGradients.NONE, parallel_iterations=None, experimental_use_pfor=True)"></a>jacobian(target, sources, unconnected_gradients=tf.UnconnectedGradients.NONE, parallel_iterations=None, experimental_use_pfor=True)</h2><p><strong>计算jacobian矩阵</strong></p>
+<ul>
+<li>target：A tensor (or list of tensor) with shape [y1,…yn] .</li>
+<li>sources: A tensor (or list of tensor) with shape [x1,…xm] .</li>
+<li>unconnected_gradients: 类似tape.gradient()中的介绍。</li>
+<li>parallel_iterations: jacobian的求解中，实际上是含有 while_loop 循环的，而该参数则是允许并行执行的循环个数。该参数将影响内存占用。</li>
+<li>experimental_use_pfor:<ul>
+<li>True（默认） : 使用向量化的方法（pfor）计算 jacobian（vectorizes the jacobian computation）</li>
+<li>False : 使用 while_loop 方法计算。一般来说，向量化能加速计算，但向量化占用的内存远高于 while_loop 。</li>
+</ul>
+</li>
+<li>Returns: A tensor (or list of tensor) with shape [y1,…yn,x1…xm] 。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">with tf.GradientTape() as g:</span><br><span class="line">    x &#x3D; tf.constant(np.random.rand(100, 10, 3))</span><br><span class="line">    W &#x3D; tf.constant(np.random.rand(100, 3, 5))</span><br><span class="line">    g.watch(x)</span><br><span class="line">    y &#x3D; x @ W</span><br><span class="line">jacobian &#x3D; g.jacobian(y, x)</span><br><span class="line"></span><br><span class="line">print(jacobian.shape)  # (100, 10, 5, 100, 10, 3)</span><br></pre></td></tr></table></figure>
+<h2 id="reset"><a href="#reset" class="headerlink" title="reset()"></a>reset()</h2><p><strong>清除已有的计算图</strong></p>
+<p>下面两个代码块是等价的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with tf.GradientTape() as t:  </span><br><span class="line">    loss &#x3D; loss_fn()</span><br><span class="line">with tf.GradientTape() as t: </span><br><span class="line">    loss +&#x3D; other_loss_fn()</span><br><span class="line">t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn</span><br><span class="line"></span><br><span class="line"># The following is equivalent to the above</span><br><span class="line"></span><br><span class="line">with tf.GradientTape() as t:  </span><br><span class="line">    loss &#x3D; loss_fn() </span><br><span class="line">    t.reset()  </span><br><span class="line">    loss +&#x3D; other_loss_fn()t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn</span><br></pre></td></tr></table></figure>
+<p>问题：既然有上面的等价形式，那么tape.reset()是不是就是多余的呢？</p>
+<p>当然不是啦，利用reset可以在同一个tape里面进行不同计算图的切换:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loss &#x3D; 0.0</span><br><span class="line">with tf.GradientTape() as t: </span><br><span class="line">    loss +&#x3D; encoder_loss_fn()  </span><br><span class="line">    if use_decoder &#x3D;&#x3D; True:    </span><br><span class="line">        t.reset()</span><br><span class="line">        loss +&#x3D; decoder_loss_fn()</span><br></pre></td></tr></table></figure>
+<p>虽然用等价形式也可以做到，但是用reset显然更漂亮，漂亮就是最大的用处。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1035,128 +1165,11 @@ def choose_action(state, q_table):`
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/05/Booklist2021/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="特大号的研究僧">
-      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="特大号鲨鱼的池塘">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/05/Booklist2021/" class="post-title-link" itemprop="url">Booklist2021</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-05 17:33:33" itemprop="dateCreated datePublished" datetime="2021-05-05T17:33:33+08:00">2021-05-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:17:39" itemprop="dateModified" datetime="2021-05-23T09:17:39+08:00">2021-05-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%98%85%E8%AF%BB%E8%80%85/" itemprop="url" rel="index"><span itemprop="name">阅读者</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>下面记录了我2021年的读书清单，读完一本之后才更新，直到2021年结束</strong></p>
-<p><strong>希望我能通过这样的方式促进自己能多读书，读好书，好读书</strong></p>
-<hr>
-<h1 id="《人间失格》-太宰治"><a href="#《人间失格》-太宰治" class="headerlink" title="《人间失格》 太宰治"></a>《人间失格》 太宰治</h1><h2 id="Start-2021-4-12-具体我也不记得了"><a href="#Start-2021-4-12-具体我也不记得了" class="headerlink" title="Start:2021-4-12 (具体我也不记得了)"></a>Start:2021-4-12 (具体我也不记得了)</h2><p><img src="https://ebookg.com/storage/upload/files/000/26/20/71_cover_m.jpg" alt="《人间失格》"></p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>“生而为人，我很抱歉”</strong>—–这个时代年轻人最喜欢调侃的经典丧名言</p>
-<p>这是日本文豪太宰治的名句，也是太宰治的绝笔之作。太宰治——被村上春树誉为国民级作家，《人间失格》解剖了每个人的自我、孤独和迷惘，日本现代文学史的代表作品。主角大庭叶藏作为一个摸不清人类规则的“边缘人”，不断的自我放逐，逐渐“丧失了做人的资格”</p>
-<h2 id="读后感"><a href="#读后感" class="headerlink" title="读后感"></a>读后感</h2><p>我只读完了《人间失格》大庭叶藏的部分，也就是三篇手记，这个小说的主角让我十分的反感，甚至恶心，用通俗的话来说，就是一副好牌，打得稀碎。叶藏从小就在伪装自己的内心，甚至把世界的人类分为两类，并不是男女两类，而是自己和除了自己的人，甚至他并不认为自己是人。他总是在刻意的讨好他人，装疯扮傻有意的迎合他人（包括他的父母）。其中一个片段把这一点体现的淋漓尽致：父亲问家人想要什么礼物，让大家写在清单上，叶藏一直是让父亲帮他带书籍，但是父亲这一次认为他是个小孩应该会喜欢老虎玩偶，这让叶藏感到十分的不安（其实叶藏自己也不知道想要什么，他只会考虑别人喜欢让他要什么），最终叶藏晚上偷偷的把玩偶写在清单上。</p>
-<p>这种在乎他人看法到极致的人，活着很累，人应该大部分为了自己而活，但也应该体会他人的感受，毕竟人是社会群居生物，其中这个比例不同，造成了人的性格不同。</p>
-<p>“生而为人，我很抱歉”，我希望这是一句警言提醒为自己，在我超乎寻常的为他人感受时，适当的放过自己，让自己在那时候变得自私一些。</p>
-<ul>
-<li><strong>“事实上，包括嘲笑我的人在内，人类不是在彼此的不信和猜忌中，照样丝毫没有将耶和华敬怀在心中，若无其事的生存着吗？”</strong></li>
-</ul>
-<h2 id="End：2021-4-20（大概时间）"><a href="#End：2021-4-20（大概时间）" class="headerlink" title="End：2021-4-20（大概时间）"></a>End：2021-4-20（大概时间）</h2><hr>
-<h1 id="《朝闻道》刘慈欣"><a href="#《朝闻道》刘慈欣" class="headerlink" title="《朝闻道》刘慈欣"></a>《朝闻道》刘慈欣</h1><h2 id="Start：2021-4-28"><a href="#Start：2021-4-28" class="headerlink" title="Start：2021-4-28"></a>Start：2021-4-28</h2><p><img src="https://th.bing.com/th/id/Rcf1e372d6475f3d084dcbbe177f1b410?rik=ojK6exG4JcBVLg&riu=http://p7.qhmsg.com/dr/270_500_/t01add8f4dd4338673c.jpg?size=268x357&ehk=eLcMP1KMEerDlLzuj+4J3MQV4hksbhX1FpGliSpncdw=&risl=&pid=ImgRaw" alt="朝闻道"></p>
-<h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>地核中的奇特生物，经过十万年的文明探索，终于突破了宇宙的屏障，却发现身处于另外一个更大的宇宙！天文学家研究出星星的运行规律，却发现星空与人类大佬的运行方式惊人一致！人类科学家即将发现宇宙的终极秘密，却被外星生命告知宇宙的真理吧必须用只自己的生命来交换！</p>
-<p>（如果你是一个在生命道路上为了追求真理坚持不懈，永不放弃的人，但是最终被告知只需要献出你的生命，才能一窥真理的美，你会做什么样的选择）</p>
-<p>大刘的《朝闻道》向我们展示了，那些追求真理的科学家的选择，各个国家元首的选择，以及普通人的反应。</p>
-<h2 id="读后感-1"><a href="#读后感-1" class="headerlink" title="读后感"></a>读后感</h2><p>人的一生的意义是什么，作为一个理工科的研究生，我目前在做的事情，无非是利用科学的方法来解决一个有一个的实际问题，比如说，面对一个NP问题，如何用一种P的方法来得出一个更好的答案。如果有一天，有人问你，我能够为你提供一种完美的方法来解决这个问题，但是代价是和生命同等重要的东西（例如青春，朋友，亲人等等），对于现在的我来说我肯定是拒绝的，因为对于那个完美的解决方案，并不是最吸引我的东西，这也是我认为我不适合沉淀搞科学研究的原因吧！</p>
-<p>假如把这个解决方案换成一个最吸引我的东西，你会去交换吗？我现在还是很难回答这个问题！</p>
-<p>还是谈一谈小说本身吧，里面的主角丁仪是一个基础物理学家，一生的目标都是为了寻找宇宙大统一模型，最终被排险者（外星生命）告知只需要付出生命的代价，就能知道答案，但是这个答案不能告诉其他人。丁仪选择了付出生命而追求真理，像他一样的不只是基础物理学家，还有古生物学家，问了恐龙灭绝的原因，数学家，问了哥德巴赫猜想等，霍金博士问了宇宙的终极目的是什么，外星生命不能回答这个问题，霍金并没有成功的献出生命。我认为大刘的这个设定体现了一丝绝望中的希望，外星生命并不是神的存在，它们也有不知道的东西，和人类一样。</p>
-<ul>
-<li><strong>“对宇宙终极真理的追求是文明的最终目标和归宿”</strong></li>
-<li><strong>“飞蛾扑火，它至少享受了短暂的光明”</strong></li>
-</ul>
-<h2 id="End-2021-5-3"><a href="#End-2021-5-3" class="headerlink" title="End:2021-5-3"></a>End:2021-5-3</h2><hr>
-<h1 id="《一个人就一个人》-刘同"><a href="#《一个人就一个人》-刘同" class="headerlink" title="《一个人就一个人》 刘同"></a>《一个人就一个人》 刘同</h1><h2 id="Start-2021-5-4"><a href="#Start-2021-5-4" class="headerlink" title="Start:2021-5-4"></a>Start:2021-5-4</h2><p><img src="https://th.bing.com/th/id/Ra31839618ab8864995408a3213e4d06c?rik=rDlfSDv+j1Jb1g&riu=http://www.chinawriter.com.cn/NMediaFile/2020/0722/MAIN202007220836000270961459340.JPG&ehk=wGeBufEEK5sYUlPQViM295vGdi9LZRiqb3a+yA3B8fM=&risl=&pid=ImgRaw" alt="《一个人就一个人》"></p>
-<h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><p>这是一本刘同的个人自传散文，讲述了一些作者生活中的小故事，个人感觉更像是一本意林短篇小说集；这本书最吸引人的地方是作者的笔法描述很生活随意化，通俗易懂，让人读的很畅快舒适。小说的一个个生活的小故事充满了刘同在平时生活中的一些想法，让人产生强烈的共鸣。</p>
-<h2 id="读后感-2"><a href="#读后感-2" class="headerlink" title="读后感"></a>读后感</h2><p>5.10号晚上刚刚读完这本书，就立马来写读后感了，因为我害怕我忘记读完后的那种感觉。本以为全是刘同的个人日志分享，但其中也有两个他人的小故事，让人很感动。一个是关于爱情，两个人虽然互相有好感，而且都已经表达出来了，但是却不能在一起，因为男方有绝症。听起来很狗血，但还是让人羡慕这样的缘分和运气，遇见一个对的人，那么相处起来就不用小心翼翼，你能够依然做你自己，同时对方也会感到快乐幸福（感觉这个故事肯定是虚构的，故事叫<strong>“从不后悔遇见你”</strong>）。</p>
-<p>另一个故事是关于母子亲情的，故事叫<strong>“友谊旅馆”</strong>，差点让我大晚上泪崩。为母则刚（并没有女子柔弱）。一个单亲妈妈既要扮演父亲又要扮演母亲，还要照顾孩子内心对父亲的疑问，承受孩子的不理解，实在是太难了，前天（5.9）刚刚过去的母亲节，我拜托了舅舅给妈妈订了一个蛋糕，这应该是第一次主动给她过母亲节，虽然没在家里看着她吃蛋糕，但是希望母亲能够幸福开心。</p>
-<ul>
-<li><strong>能看见就很满足，从未想过自己能拥有，直到被人提醒你连看的资格都没有。</strong></li>
-<li><strong>年纪不是别人瞧不起你的理由，幼稚才是。</strong></li>
-<li><strong>梦想是不需要分享的，只能自己埋头去做。</strong></li>
-<li><strong>如果生活一成不变，那自己对待生活的态度就要改变。</strong></li>
-<li><strong>我们都是成年人了，你不用对我撒谎、婉转，顾左右而言他，我们并不生气你的欺骗，我们只是生气你在浪费我的时间。</strong></li>
-<li><strong>绝不和朋友发送经济往来。</strong></li>
-</ul>
-<p>就写到这吧！！！！</p>
-<h2 id="End-2021-5-10"><a href="#End-2021-5-10" class="headerlink" title="End:2021-5-10##"></a>End:2021-5-10##</h2><hr>
-<h1 id="《非暴力沟通》-美-马歇尔·卢森堡"><a href="#《非暴力沟通》-美-马歇尔·卢森堡" class="headerlink" title="《非暴力沟通》 [美]马歇尔·卢森堡#"></a>《非暴力沟通》 [美]马歇尔·卢森堡#</h1><h2 id="Start-2021-5-11"><a href="#Start-2021-5-11" class="headerlink" title="Start:2021-5-11"></a>Start:2021-5-11</h2><p><img src="https://img13.360buyimg.com/n1/jfs/t2023/299/1166228154/365325/48b4cb1/5641862fN6ba42b8d.jpg" alt="《非暴力沟通》"></p>
-<h2 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h2><p>作为一个遵纪守法的好人，也许我们从来没有想过和“暴力”扯上关系。不过如果稍微留意一下现实生活中的谈话方式，并且用心体会各种谈话方式给我们的不同感受，我们一定会发现，有些话的确伤人！言语上的指责、嘲讽、否定、说教以及任意打断、拒不回应、随意出口的评价和结论给我们带来的情感和精神上的创伤，甚至比肉体的伤害更加令人痛苦。这些无心或有意的语言暴力让人与人变得冷漠、隔阂、敌视</p>
-<h2 id="读一半感"><a href="#读一半感" class="headerlink" title="读一半感"></a>读一半感</h2><p>截止5月23日，读了一半，到了第八章。我还是不适合这种科普科学的书籍，感觉没有什么动力读下去。但是前面几章的内容，我还是挺有印象的，例如对于区分观察和评价的内容，当我们在和人对话的时候，评价的内容少于观察的内容，这样会让人更加舒服，过多的带有个人感情色彩的评价，可能会让人感到不舒服。</p>
-<p>这本书目前就读到这吧，等有机会再把它阅读完。</p>
-<ul>
-<li><strong>我们不要将价值判断与道德评判混为一谈</strong></li>
-<li><strong>真诚待人比委屈求全更为可贵</strong></li>
-</ul>
-<h2 id="End：2021-5-23"><a href="#End：2021-5-23" class="headerlink" title="End：2021-5-23"></a>End：2021-5-23</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1223,7 +1236,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1236,7 +1249,7 @@ def choose_action(state, q_table):`
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
