@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Pandas介绍在pandas中主要为两种数据类型DataFrame相当于一个table（表格），Series则相当于DataFrame的一列。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pandas-Kaggle">
+<meta property="og:url" content="http://example.com/2021/07/02/pandas-Kaggle/index.html">
+<meta property="og:site_name" content="特大号鲨鱼的池塘">
+<meta property="og:description" content="Pandas介绍在pandas中主要为两种数据类型DataFrame相当于一个table（表格），Series则相当于DataFrame的一列。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-02T11:27:06.000Z">
+<meta property="article:modified_time" content="2021-07-02T11:48:02.493Z">
+<meta property="article:author" content="特大号的研究僧">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="pandas">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/07/02/pandas-Kaggle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pandas-Kaggle | 特大号鲨鱼的池塘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">特大号鲨鱼的池塘</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/02/pandas-Kaggle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pandas-Kaggle
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-02 19:27:06 / 修改时间：19:48:02" itemprop="dateCreated datePublished" datetime="2021-07-02T19:27:06+08:00">2021-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pandas/" itemprop="url" rel="index"><span itemprop="name">pandas</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Pandas介绍"><a href="#Pandas介绍" class="headerlink" title="Pandas介绍"></a>Pandas介绍</h1><p>在pandas中主要为两种数据类型<br>DataFrame相当于一个table（表格），Series则相当于DataFrame的一列。</p>
+<span id="more"></span>
+<h1 id="Pandas数据生成"><a href="#Pandas数据生成" class="headerlink" title="Pandas数据生成"></a>Pandas数据生成</h1><p>DataFrame生成有字典生成的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.DataFrame(&#123;key1:[ ],key2:[ ]...&#125;, index &#x3D; [ ])</span><br></pre></td></tr></table></figure>
+<p>创建的时候最好写完整<br>当中的key1，key2代表列名称，而index代表行名称。</p>
+<p>DataFrame另一种方式，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.DataFrame([[],[],..],columns &#x3D; [], index&#x3D;[])</span><br></pre></td></tr></table></figure>
+<p>这两种方式的区别就是，第一种用字典的方式指定列名称，和这一列的value，行名称通过index的列表来指定<br>第二种方式通过创建一个矩阵来指明table的各个entry，然后分别命名columns和index，需要注意的是，按照矩阵的方式，通过行来平铺赋值，<br>而第一种方式通过列来赋值。</p>
+<p>对于Series，它没有column的名字，只有一个name变量。Series可以理解为DataFrame的一列，但是它没有colunm name。<br>由于它没有column name，那么它没有字典命名方法，它的生成方式有点像DataFrame的第二种方式，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.Series([],index&#x3D;[],name&#x3D;）</span><br></pre></td></tr></table></figure>
+
+<h1 id="Pandas数据导入与导出"><a href="#Pandas数据导入与导出" class="headerlink" title="Pandas数据导入与导出"></a>Pandas数据导入与导出</h1><h2 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df &#x3D; pd.read_csv(&quot;..&#x2F;input&#x2F;wine-reviews&#x2F;winemag-data-130k-v2.csv&quot;, index_col&#x3D;0)</span><br><span class="line">#第一个参数为导入的csv文件的路径,index_col &#x3D; 0 是将csv的第一列作为df的index标签</span><br></pre></td></tr></table></figure>
+
+<h2 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#output是一个DataFrame</span><br><span class="line">output.to_csv(&#39;submission.csv&#39;, index&#x3D;False)</span><br><span class="line">#导出文件submission.csv，index&#x3D;False表示csv中不含有index标签</span><br></pre></td></tr></table></figure>
+
+<h1 id="Pandas索引"><a href="#Pandas索引" class="headerlink" title="Pandas索引"></a>Pandas索引</h1><p>对于DataFrame的索引<br>有两种方式，一种像数组的索引，利用[][]来访问具体的某个entry，但是必须要清楚第一个[]表示列，第二个[]表示行。</p>
+<p>另一种就是利用loc和iloc，假设df是一个DataFrame，df.loc[ a,b ]，a和b必须是分别是DataFrame的行标签和列标签。<br>df.iloc[a,b]，a和b分别是行号和列号。注意，利用loc或者iloc时，如果要取所有的列时，列可以省略，但是如果要取所有的行时，必须要加上 ‘：’，<br>也就是说，行一定不能省略</p>
+<p>如果要去一段DataFrame的话，推荐使用loc或者iloc，不推荐使用数组索引<br>loc和iloc在切片索引上的区别：<br>loc由于是标签索引，所以在使用[a:b]，左闭右闭<br>iloc的[a:b]则是左闭右开</p>
+<p>特别需要注意的是如果用了loc或者iloc，在[]内不能使用了’ : ‘，切片或者全选符号，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">e.g：</span><br><span class="line">df.iloc[ :3 , [1,3,5]] 	#Right</span><br><span class="line">df.iloc[ [:3], [1,3,5]] 	#Wrong</span><br><span class="line">df.iloc[ [1:3], [1,3,5]] #Wrong</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conditional-selection"><a href="#Conditional-selection" class="headerlink" title="Conditional selection"></a>Conditional selection</h1><p>可以用条件判断语句对DataFrame或者Series进行逻辑判断</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#reviews 是一个DataFrame</span><br><span class="line">reviews.country &#x3D;&#x3D; &#39;Italy&#39;</span><br><span class="line"></span><br><span class="line">0          True</span><br><span class="line">1         False</span><br><span class="line">          ...  </span><br><span class="line">129969    False</span><br><span class="line">129970    False</span><br><span class="line">Name: country, Length: 129971, dtype: bool</span><br></pre></td></tr></table></figure>
+<p>以上操作是对Series进行的，所有返回的是一个Series</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reviews.loc[reviews.country &#x3D;&#x3D; &#39;Italy&#39;]</span><br></pre></td></tr></table></figure>
+<p>结合loc，可以返回逻辑为真的那些行，上面得到的是一个DataFrame<br>具体可以参考连接：</p>
+<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/residentmario/indexing-selecting-assigning#Conditional-selection">https://www.kaggle.com/residentmario/indexing-selecting-assigning#Conditional-selection</a></p>
+<h1 id="map和apply"><a href="#map和apply" class="headerlink" title="map和apply"></a>map和apply</h1><p>它们都是用来转换DataFrame里的数据的作用，但是注意，它们都会返回一个DataFrame，但是不会改变使用这个方法的DataFrame<br>map是对于Series使用的，而apply是对于DataFrame。</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>对于map很明显是带入Series每一行的数据，然后返回一个Series。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">e.g：</span><br><span class="line">#reviews 是一个DataFrame</span><br><span class="line">review_points_mean &#x3D; reviews.points.mean()</span><br><span class="line">reviews.points.map(lambda p: p - review_points_mean)</span><br></pre></td></tr></table></figure>
+
+<h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><p>apply就需要注意<br>df.apply(function,axis=’columns’)，axis如果为’columns’，说明带入function的是df的row，需要改变的是某一整列<br>同理，如果axis=’index’，则带入function的是df每一列column，说明将会改变df某一整行，这种情况还是比较少见的，大部分情况还是改变一整列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">e.g:</span><br><span class="line">def remean_points(row):</span><br><span class="line">    row.points &#x3D; row.points - review_points_mean</span><br><span class="line">    return row</span><br><span class="line">#reviews 是一个DataFrame</span><br><span class="line">reviews.apply(remean_points, axis&#x3D;&#39;columns&#39;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Summary-function"><a href="#Summary-function" class="headerlink" title="Summary function"></a>Summary function</h1><p>对于Summary function，包括max,min,mean,median,std,unique,describe,value_counts等等..<br>这些函数都可以用在DataFrame的某一列，或者是Series</p>
+<p>max,min,mean,median,std分别返回列的最大，最小，均值，中位数，标准差<br>unique:返回列中不重复的标签，例如列为[‘a’,’b’,’c’,’a’]，那么返回[‘a’,’b’,’c’]，返回的是一个numpy一维数列<br>value_counts:计算各个标签出现的次数，并且返回一个以标签作为index，次数作为value的Series</p>
+<h1 id="Groupby"><a href="#Groupby" class="headerlink" title="Groupby"></a>Groupby</h1><p>个人认为，是通过columns标签对DataFrame进行分组，将标签相同的DataFrame的行，看成一个子DataFrame<br>然后对每个subDataFrame（只是个人理解，实际上没有）进行各种操作，将结果进行拼接，返回一个Series值，Series的index就是前面group不用的标签在DataFrame的value</p>
+<p>进行一个操作返回的肯定是Series，可以应用agg([max,min,mean…])操作返回多个Summary function值，这时候返回的就是一个DataFrame</p>
+<h1 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h1><p>Method 1：sort_index<br>按照index的标签进行排序，ascending=True（缺省）,默认是按照从小到大排序<br>对于Series和DataFrame都是使用的</p>
+<p>Method 2：sort_values（by=[]，ascending=True）<br>对于Series，由于没有columns名称，所以没有by参数<br>对于DataFrame，则需要by参数，例如by=[‘a’,’b’]，意味着，首先对a标签列进行从小到大排序，如果a相同的，则按照b进行从小到大排序。</p>
+<h1 id="Rename"><a href="#Rename" class="headerlink" title="Rename"></a>Rename</h1><p>pandas有对column和index进行rename的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">e.g：</span><br><span class="line">reviews.rename(columns&#x3D;&#123;&#39;points&#39;: &#39;score&#39;&#125;, index&#x3D;&#123;0: &#39;firstEntry&#39;, 1: &#39;secondEntry&#39;&#125;) #对column rename，将points变为score</span><br><span class="line">							#对 index rename，将0变为firstEntry，将1变为secondEntry</span><br><span class="line">index和column 的索引也可以有自己的name，</span><br><span class="line"></span><br><span class="line">reviews.rename_axis(&quot;wines&quot;, axis&#x3D;&#39;rows&#39;).rename_axis(&quot;fields&quot;, axis&#x3D;&#39;columns&#39;)	#将所有的index总称为wines，所有的columns总称为field</span><br><span class="line">								#这里的rows也可以换成index</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/pandas/" rel="tag"># pandas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/29/tensorflow2-02/" rel="prev" title="tensorflow2-02">
+      <i class="fa fa-chevron-left"></i> tensorflow2-02
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pandas%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Pandas介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pandas%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">Pandas数据生成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pandas%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%E4%B8%8E%E5%AF%BC%E5%87%BA"><span class="nav-number">3.</span> <span class="nav-text">Pandas数据导入与导出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text">导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA"><span class="nav-number">3.2.</span> <span class="nav-text">导出</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pandas%E7%B4%A2%E5%BC%95"><span class="nav-number">4.</span> <span class="nav-text">Pandas索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conditional-selection"><span class="nav-number">5.</span> <span class="nav-text">Conditional selection</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#map%E5%92%8Capply"><span class="nav-number">6.</span> <span class="nav-text">map和apply</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#map"><span class="nav-number">6.1.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply"><span class="nav-number">6.2.</span> <span class="nav-text">apply</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary-function"><span class="nav-number">7.</span> <span class="nav-text">Summary function</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groupby"><span class="nav-number">8.</span> <span class="nav-text">Groupby</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sort"><span class="nav-number">9.</span> <span class="nav-text">Sort</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Rename"><span class="nav-number">10.</span> <span class="nav-text">Rename</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="特大号的研究僧"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">特大号的研究僧</p>
+  <div class="site-description" itemprop="description">禁鱼之地，塘主勿扰</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">特大号的研究僧</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
