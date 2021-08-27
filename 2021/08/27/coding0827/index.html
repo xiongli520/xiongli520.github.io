@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1 反转链表问题输入一个链表，反转链表后，输出新的链表表头 例如 1234输入:&amp;#123;1,2,3&amp;#125;返回值:&amp;#123;3,2,1&amp;#125; 思路做好表头前一个连接和后一个连接的记录，然后只需要对它进行循环即可  代码12345678910111213141516171819class ListNode:	def __init__(self,x):		self.val &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coding0827">
+<meta property="og:url" content="http://example.com/2021/08/27/coding0827/index.html">
+<meta property="og:site_name" content="特大号鲨鱼的池塘">
+<meta property="og:description" content="1 反转链表问题输入一个链表，反转链表后，输出新的链表表头 例如 1234输入:&amp;#123;1,2,3&amp;#125;返回值:&amp;#123;3,2,1&amp;#125; 思路做好表头前一个连接和后一个连接的记录，然后只需要对它进行循环即可  代码12345678910111213141516171819class ListNode:	def __init__(self,x):		self.val &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://uploadfiles.nowcoder.com/images/20200413/284295_1586789770222_32ECB43D8FE9B99E3B1FE4D4D7B4B010">
+<meta property="article:published_time" content="2021-08-27T12:15:51.000Z">
+<meta property="article:modified_time" content="2021-08-27T13:05:50.857Z">
+<meta property="article:author" content="特大号的研究僧">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="coding">
+<meta property="article:tag" content="牛客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://uploadfiles.nowcoder.com/images/20200413/284295_1586789770222_32ECB43D8FE9B99E3B1FE4D4D7B4B010">
+
+<link rel="canonical" href="http://example.com/2021/08/27/coding0827/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>coding0827 | 特大号鲨鱼的池塘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">特大号鲨鱼的池塘</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/27/coding0827/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="特大号的研究僧">
+      <meta itemprop="description" content="禁鱼之地，塘主勿扰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="特大号鲨鱼的池塘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          coding0827
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-27 20:15:51 / 修改时间：21:05:50" itemprop="dateCreated datePublished" datetime="2021-08-27T20:15:51+08:00">2021-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%B7%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">刷题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1 反转链表"></a>1 反转链表</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><strong>输入一个链表，反转链表后，输出新的链表表头</strong></p>
+<p><strong>例如</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入:&#123;1,2,3&#125;</span><br><span class="line"></span><br><span class="line">返回值:&#123;3,2,1&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>做好表头前一个连接和后一个连接的记录，然后只需要对它进行循环即可</p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20200413/284295_1586789770222_32ECB43D8FE9B99E3B1FE4D4D7B4B010" alt="图解"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class ListNode:</span><br><span class="line">	def __init__(self,x):</span><br><span class="line">		self.val &#x3D; x</span><br><span class="line">		self.next &#x3D; None</span><br><span class="line"></span><br><span class="line">def reverseList(pHead):</span><br><span class="line">	cur &#x3D; pHead</span><br><span class="line">	pre &#x3D; None</span><br><span class="line">	if not pHead:</span><br><span class="line">		return None</span><br><span class="line"></span><br><span class="line">	while cur:				#结束条件为遍历整个链表一遍</span><br><span class="line">		temp &#x3D; cur.next		#记录原链表下一个值</span><br><span class="line">		cur.next &#x3D; pre		#反转链表下一个值为pre</span><br><span class="line">		</span><br><span class="line">		pre &#x3D; cur			#进行迭代</span><br><span class="line">		cur &#x3D; cur.next		#同样进行迭代</span><br><span class="line"></span><br><span class="line">	return pre</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-实现二叉树先序，中序和后序遍历"><a href="#2-实现二叉树先序，中序和后序遍历" class="headerlink" title="2 实现二叉树先序，中序和后序遍历"></a>2 实现二叉树先序，中序和后序遍历</h1><h2 id="这个就不描述了"><a href="#这个就不描述了" class="headerlink" title="这个就不描述了"></a>这个就不描述了</h2><h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class TreeNode:</span><br><span class="line">	def __init__(self,x):</span><br><span class="line">		self.val &#x3D; x</span><br><span class="line">		self.left &#x3D; None</span><br><span class="line">		self.right &#x3D; None</span><br><span class="line"></span><br><span class="line">def solution(root):</span><br><span class="line">	preorder, midorder, postorder &#x3D; [], [], []</span><br><span class="line">	def find(root):</span><br><span class="line">		preorder.append(root.val)</span><br><span class="line">		find(root.left)</span><br><span class="line">		midorder.append(root.val)</span><br><span class="line">		find(root.right)</span><br><span class="line">		postorder.append(root.val)</span><br><span class="line"></span><br><span class="line">	find(root)</span><br><span class="line">	return [preorder, midorder, postorder]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-寻找第k大的数"><a href="#3-寻找第k大的数" class="headerlink" title="3 寻找第k大的数"></a>3 寻找第k大的数</h1><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p><strong>根据快排的思路，找出数组中第K大的数</strong></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>不用去重</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input:[1, 3, 5, 2, 2], 5, 3</span><br><span class="line"></span><br><span class="line">return 2</span><br><span class="line"></span><br><span class="line">input [10,10,9,9,8,7,5,6,4,3,4,2],12,3</span><br><span class="line"></span><br><span class="line">return 9</span><br></pre></td></tr></table></figure>
+
+<p>##思路##<br>快排的基本思路是在数组中随便选一个基准值，找到基准值在数组的排序位置（例如数组[1,3,4,2]中如果选择3位基准值，3是在这个数组中第3位），以基准值</p>
+<p>将数组分层两个部分（例如分为[1,2]和[4]），比基准值小的在左边，大的在右边，然后继续对这两个数组进行快排即可</p>
+<p>而找到数组第k大的数，也就是要找到一个数，在数组中排在第n-k位，因为快排可以知道基准值的位置，所以利用这一点，就能找到这个第k大的数</p>
+<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># arr 为输入数组</span><br><span class="line"># n 为输入数组长度</span><br><span class="line"># k 为找到第k大的数</span><br><span class="line">def findKth(arr, n, k):</span><br><span class="line">	def quicksort(arr, low, high, n, k):</span><br><span class="line">		left &#x3D; low</span><br><span class="line">		right &#x3D; high</span><br><span class="line">		key &#x3D; low		#一般选择第一个数作为基准值</span><br><span class="line">		while left &lt; right:</span><br><span class="line">			while left &lt; right and arr[key]&lt;&#x3D;arr[right]:</span><br><span class="line">				right -&#x3D; 1</span><br><span class="line">			while left &lt; right and arr[key]&gt;&#x3D;arr[left]:</span><br><span class="line">				left +&#x3D; 1</span><br><span class="line">			#此时已经找到了两个数arr[left]比基准值大，arr[right]比基准值小</span><br><span class="line">			#交换这两个数</span><br><span class="line">			arr[left], arr[right] &#x3D; arr[right], arr[left]</span><br><span class="line">		#此时left &#x3D;&#x3D; right，并且left的位置就是基准值在数组中的准确位置</span><br><span class="line">		arr[key], arr[left] &#x3D; arr[left], arr[key]</span><br><span class="line">		</span><br><span class="line">		if left &#x3D;&#x3D; n-k:		#此时基准值就是第k大的数</span><br><span class="line">			return arr[left]	</span><br><span class="line">		</span><br><span class="line">		if left &lt; n-k:		#此时基准值在n-k的左边,则第k大的数在arr[left+1,high]这边</span><br><span class="line">			return quicksort(arr, left+1, high, n, k)</span><br><span class="line">		if left &gt; n-k:		#此时基准值在n-k的右边,则第k大的数在arr[low,left-1]这边</span><br><span class="line">			return quicksort(arr, low, left-1, n, k)</span><br><span class="line">		</span><br><span class="line">		return quicksort(arr, 0, n-1, n, k)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/coding/" rel="tag"># coding</a>
+              <a href="/tags/%E7%89%9B%E5%AE%A2/" rel="tag"># 牛客</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/02/pandas-Kaggle/" rel="prev" title="pandas-Kaggle">
+      <i class="fa fa-chevron-left"></i> pandas-Kaggle
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">1 反转链表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E5%85%88%E5%BA%8F%EF%BC%8C%E4%B8%AD%E5%BA%8F%E5%92%8C%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">2.</span> <span class="nav-text">2 实现二叉树先序，中序和后序遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E4%B8%AA%E5%B0%B1%E4%B8%8D%E6%8F%8F%E8%BF%B0%E4%BA%86"><span class="nav-number">2.1.</span> <span class="nav-text">这个就不描述了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AF%BB%E6%89%BE%E7%AC%ACk%E5%A4%A7%E7%9A%84%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3 寻找第k大的数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">3.1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">3.3.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="特大号的研究僧"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">特大号的研究僧</p>
+  <div class="site-description" itemprop="description">禁鱼之地，塘主勿扰</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">特大号的研究僧</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
